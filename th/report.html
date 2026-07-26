@@ -347,6 +347,18 @@ document.getElementById('report-form').addEventListener('submit', async (e) => {
   formData.append('latitude', document.getElementById('latitude').value);
   formData.append('longitude', document.getElementById('longitude').value);
 
+  // สร้าง location จากที่อยู่
+  const addrParts = [
+    document.getElementById('house_no').value.trim(),
+    document.getElementById('village_lane').value.trim(),
+    document.getElementById('road').value.trim(),
+    document.getElementById('sub_district').value.trim(),
+    document.getElementById('district').value.trim(),
+    document.getElementById('province').value.trim(),
+    document.getElementById('postal_code').value.trim()
+  ].filter(Boolean);
+  formData.append('location', addrParts.join(', ') || 'ไม่ระบุสถานที่');
+
   const photoFile = document.getElementById('photo').files[0];
   if (photoFile) formData.append('photo', photoFile);
 

@@ -95,6 +95,12 @@ export async function onRequest(context) {
         return error(400, 'animal_type and condition are required');
       }
 
+      // ถ้าไม่มี location ให้สร้างจากที่อยู่
+      if (!location || !location.trim()) {
+        const addrParts = [house_no, village_lane, road, sub_district, district, province, postal_code].filter(Boolean);
+        location = addrParts.length > 0 ? addrParts.join(', ') : 'ไม่ระบุสถานที่';
+      }
+
       const { results } = await env.findmypet_db.prepare(
         `INSERT INTO reports
          (animal_type, animal_type_custom, condition, title, location, description, contact, reporter_name,
