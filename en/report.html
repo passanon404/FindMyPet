@@ -8,8 +8,11 @@
 <style>
   body{background:#f3faff;font-family:Inter,sans-serif;color:#071e27}
   .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
-  .form-input{border:1px solid #ddc0b8;border-radius:12px;padding:12px 16px;width:100%;font-size:16px;background:white}
-  .form-input:focus{outline:2px solid #9f4122;outline-offset:-1px}
+  .form-input{border:1px solid #ddc0b8;border-radius:12px;padding:12px 16px;width:100%;font-size:16px;background:white;transition:all .2s}
+  .form-input:focus{outline:2px solid #9f4122;outline-offset:-1px;border-color:transparent}
+  select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2356423c' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#071e27;color:white;padding:12px 24px;border-radius:12px;z-index:100;opacity:0;transition:opacity .3s;pointer-events:none}
+  .toast.show{opacity:1}
 </style>
 </head>
 <body class="min-h-screen">
@@ -34,41 +37,178 @@
 <main class="py-8 px-6">
 <div class="max-w-3xl mx-auto">
 <div class="mb-8"><h1 class="text-[40px] font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]" style="letter-spacing:-0.02em">Report a Sighting</h1><p class="text-[16px] text-[#56423c]">Help us track and care for campus animals</p></div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-<button class="bg-white p-6 rounded-2xl border-2 border-[#9f4122] shadow-sm hover:shadow-md transition-all text-center">
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" id="report-type-selector">
+<button class="report-type-btn bg-white p-6 rounded-2xl border-2 border-[#9f4122] shadow-sm hover:shadow-md transition-all text-center" data-condition="Sighting">
 <span class="material-symbols-outlined text-4xl text-[#9f4122]" style="font-variation-settings:'FILL'1">visibility</span>
 <h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold mt-2">Report Sighting</h3>
 <p class="text-sm text-[#56423c]">Saw an animal on campus? Let us know!</p>
 </button>
-<button class="bg-white p-6 rounded-2xl border border-[#ba1a1a] shadow-sm hover:shadow-md transition-all text-center">
+<button class="report-type-btn bg-white p-6 rounded-2xl border border-[#ba1a1a] shadow-sm hover:shadow-md transition-all text-center" data-condition="Emergency">
 <span class="material-symbols-outlined text-4xl text-[#ba1a1a]" style="font-variation-settings:'FILL'1">emergency</span>
 <h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold mt-2">Emergency Case</h3>
 <p class="text-sm text-[#56423c]">Injured or in danger? Report urgently!</p>
 </button>
 </div>
-<div class="bg-white rounded-2xl p-8 shadow-sm border border-[#ddc0b8]/20">
-<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold mb-6">Sighting Details</h2>
-<form class="space-y-4">
+
+<div id="form-section" class="hidden bg-white rounded-2xl p-8 shadow-sm border border-[#ddc0b8]/20">
+<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold mb-6" id="form-title">Details</h2>
+<form id="report-form" class="space-y-4">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div><label class="block text-sm font-semibold mb-1">Animal Type</label>
-<select class="form-input"><option>Dog</option><option>Cat</option><option>Other</option></select></div>
-<div><label class="block text-sm font-semibold mb-1">Condition</label>
-<select class="form-input"><option>Healthy</option><option>Injured</option><option>Sick</option><option>Emergency</option></select></div>
+<div>
+<label class="block text-sm font-semibold mb-1">Animal Type <span class="text-red-500">*</span></label>
+<select id="animal-type" class="form-input" required>
+<option value="">— Select animal type —</option>
+</select>
 </div>
-<div><label class="block text-sm font-semibold mb-1">Location</label>
-<input class="form-input" placeholder="e.g. Near Science Building"/></div>
-<div><label class="block text-sm font-semibold mb-1">Description</label>
-<textarea class="form-input" rows="3" placeholder="Describe what you saw..."></textarea></div>
-<div><label class="block text-sm font-semibold mb-1">Your Contact (optional)</label>
-<input class="form-input" placeholder="Phone or email"/></div>
-<button class="w-full bg-[#9f4122] text-white font-semibold py-3 rounded-xl hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"><span class="material-symbols-outlined">send</span> Submit Report</button>
+<div id="custom-type-wrapper" class="hidden">
+<label class="block text-sm font-semibold mb-1">Custom Animal Type</label>
+<input id="custom-type" class="form-input" placeholder="Type animal name"/>
+</div>
+<div>
+<label class="block text-sm font-semibold mb-1">Condition <span class="text-red-500">*</span></label>
+<select id="condition" class="form-input" required>
+<option value="Healthy">Healthy</option>
+<option value="Injured">Injured</option>
+<option value="Sick">Sick</option>
+<option value="Emergency">Emergency</option>
+</select>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold mb-1">Location <span class="text-red-500">*</span></label>
+<input id="location" class="form-input" placeholder="e.g. Near Science Building" required/>
+</div>
+<div>
+<label class="block text-sm font-semibold mb-1">Description</label>
+<textarea id="description" class="form-input" rows="3" placeholder="Describe what you saw..."></textarea>
+</div>
+<div>
+<label class="block text-sm font-semibold mb-1">Contact (optional)</label>
+<input id="contact" class="form-input" placeholder="Phone number or email"/>
+</div>
+<button type="submit" id="submit-btn" class="w-full bg-[#9f4122] text-white font-semibold py-3 rounded-xl hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">send</span> Submit Report
+</button>
 </form>
+<div id="success-message" class="hidden text-center py-8">
+<span class="material-symbols-outlined text-6xl text-[#286b33]" style="font-variation-settings:'FILL'1">check_circle</span>
+<h3 class="text-2xl font-['Plus_Jakarta_Sans'] font-bold mt-2">Report Submitted!</h3>
+<p class="text-[#56423c] mt-1">Your report has been saved and is now visible on the News page.</p>
+<a href="news.html" class="inline-block mt-4 bg-[#9f4122] text-white px-6 py-2 rounded-lg hover:bg-opacity-90">View News</a>
+<button onclick="resetForm()" class="inline-block mt-2 ml-2 bg-[#dbf1fe] text-[#071e27] px-6 py-2 rounded-lg hover:bg-[#cfe6f2]">Report Again</button>
+</div>
 </div>
 </div>
 </main>
+<div id="toast" class="toast"></div>
 <footer class="bg-[#c7dde9] py-4 px-6 flex flex-col md:flex-row justify-between items-center mt-8">
 <p class="text-xs text-[#56423c]">© 2025 FindMyPet</p>
 <div class="flex gap-6"><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">Contact</a><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">Privacy</a></div>
 </footer>
+
+<script>
+const API_BASE = '/api';
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+async function loadTypes() {
+  try {
+    const res = await fetch(`${API_BASE}/types`);
+    const data = await res.json();
+    const select = document.getElementById('animal-type');
+    select.innerHTML = '<option value="">— Select animal type —</option>';
+    (data.types || []).forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.name;
+      opt.textContent = t.name;
+      select.appendChild(opt);
+    });
+    const customOpt = document.createElement('option');
+    customOpt.value = '__custom__';
+    customOpt.textContent = 'Other (type your own)';
+    select.appendChild(customOpt);
+  } catch (e) {
+    console.error('Failed to load types:', e);
+  }
+}
+
+document.querySelectorAll('.report-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.report-type-btn').forEach(b => b.style.borderColor = '#ddc0b8');
+    btn.style.borderColor = btn.dataset.condition === 'Emergency' ? '#ba1a1a' : '#9f4122';
+    btn.style.borderWidth = '2px';
+    document.getElementById('condition').value = btn.dataset.condition === 'Emergency' ? 'Emergency' : 'Healthy';
+    document.getElementById('form-section').classList.remove('hidden');
+    document.getElementById('form-title').textContent = btn.dataset.condition === 'Emergency' ? 'Emergency Case Details' : 'Sighting Details';
+    document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+document.getElementById('animal-type').addEventListener('change', function() {
+  document.getElementById('custom-type-wrapper').classList.toggle('hidden', this.value !== '__custom__');
+  if (this.value === '__custom__') {
+    document.getElementById('custom-type').required = true;
+  } else {
+    document.getElementById('custom-type').required = false;
+  }
+});
+
+document.getElementById('report-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-outlined animate-spin">refresh</span> Submitting...';
+
+  const animalTypeSelect = document.getElementById('animal-type');
+  const animalType = animalTypeSelect.value === '__custom__' ? 'อื่นๆ' : animalTypeSelect.value;
+  const animalTypeCustom = animalTypeSelect.value === '__custom__' ? document.getElementById('custom-type').value.trim() : null;
+
+  const payload = {
+    animal_type: animalType,
+    animal_type_custom: animalTypeCustom,
+    condition: document.getElementById('condition').value,
+    location: document.getElementById('location').value.trim(),
+    description: document.getElementById('description').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    reporter_name: ''
+  };
+
+  try {
+    const res = await fetch(`${API_BASE}/reports`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Submission failed');
+    }
+    document.getElementById('report-form').classList.add('hidden');
+    document.getElementById('success-message').classList.remove('hidden');
+  } catch (e) {
+    showToast('Error: ' + e.message);
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-outlined">send</span> Submit Report';
+  }
+});
+
+function resetForm() {
+  document.getElementById('report-form').classList.remove('hidden');
+  document.getElementById('success-message').classList.add('hidden');
+  document.getElementById('report-form').reset();
+  document.getElementById('custom-type-wrapper').classList.add('hidden');
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').innerHTML = '<span class="material-symbols-outlined">send</span> Submit Report';
+  document.querySelectorAll('.report-type-btn').forEach(b => b.style.borderColor = '#ddc0b8');
+}
+
+document.addEventListener('DOMContentLoaded', loadTypes);
+</script>
 </body>
 </html>

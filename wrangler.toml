@@ -1,0 +1,8 @@
+name = "findmypet"
+pages_build_output_dir = "."
+
+# D1 Database binding
+[[d1_databases]]
+binding = "findmypet_db"
+database_name = "findmypet-db"
+database_id = "1be19762-179d-43b7-891a-8057a0d2e0a4"

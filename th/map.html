@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="th">
 <head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport">
-<title>FindMyPet - แผนที่มหาวิทยาลัย</title>
+<title>FindMyPet - แผนที่มหาวิทยาลัยพะเยา</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <style>
   body{font-family:Inter,sans-serif;background:#f3faff;color:#071e27}
   .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
-  .pulse-marker{animation:pulse 2s infinite ease-in-out}
-  @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.4}100%{transform:scale(1);opacity:1}}
+  #map{width:100%;height:calc(100vh - 80px);min-height:500px;border-radius:0}
 </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
@@ -29,37 +28,103 @@
 <span class="material-symbols-outlined text-[#56423c]">account_circle</span>
 </div>
 </header>
-<main class="flex flex-1 overflow-hidden">
-<aside class="bg-[#e6f6ff] h-full w-80 flex flex-col p-4 gap-4 overflow-y-auto shadow-md shrink-0">
-<div class="mb-2"><h2 class="text-[24px] font-['Plus_Jakarta_Sans'] text-[#9f4122]">กิจกรรมใกล้เคียง</h2><p class="text-[16px] text-[#56423c]">กำลังติดตามสัตว์ 12 ตัววันนี้</p></div>
-<div class="flex flex-col gap-4">
-<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
-<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#dbf1fe] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">pets</span></div>
-<div><h3 class="text-sm font-semibold">ไข่ต้ม</h3><span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">ปกติ</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">schedule</span> เห็นเมื่อ 10 นาทีที่แล้ว</p></div></div>
-</div>
-<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
-<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#fff8e1] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#795548]">pets</span></div>
-<div><h3 class="text-sm font-semibold">กะทิ</h3><span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">ต้องการความช่วยเหลือ</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">location_on</span> ตึกวิศวะ</p></div></div>
-</div>
-<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
-<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#fff8e1] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#795548]">pets</span></div>
-<div><h3 class="text-sm font-semibold">หมอก</h3><span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">ป่วย</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">schedule</span> แจ้ง 2 ชม.ที่แล้ว</p></div></div>
-</div>
-<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
-<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#dbf1fe] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">pets</span></div>
-<div><h3 class="text-sm font-semibold">โอเลี้ยง</h3><span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">ปกติ</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">location_on</span> ห้องสมุดกลาง</p></div></div>
+<main class="flex-1 relative">
+<div id="map"></div>
+<!-- Floating info card -->
+<div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg max-w-xs border border-[#ddc0b8]/20">
+<h3 class="font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]">📍 บริเวณหน้ามหาวิทยาลัยพะเยา</h3>
+<p class="text-xs text-[#56423c] mt-1">พื้นที่จุดเฝ้าระวังสัตว์บริเวณประตูทางเข้ามหาวิทยาลัยและบริเวณโดยรอบ</p>
+<div class="mt-2 flex gap-2 text-xs">
+<span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#9f4122] inline-block"></span> จุดพบสัตว์</span>
+<span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#286b33] inline-block"></span> โซนปลอดภัย</span>
 </div>
 </div>
-<button class="mt-auto bg-[#ba1a1a] text-white w-full py-3 rounded-xl text-lg font-semibold flex items-center justify-center gap-3 hover:opacity-90 shadow-lg"><span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">emergency</span> แจ้งเหตุฉุกเฉิน</button>
-</aside>
-<section class="flex-1 relative bg-[#dbf1fe] flex items-center justify-center">
-<div class="text-center"><span class="material-symbols-outlined text-8xl text-[#9f4122]/30" style="font-variation-settings:'FILL'1">map</span>
-<h3 class="text-xl font-['Plus_Jakarta_Sans'] font-bold text-[#56423c] mt-4">แผนที่แบบโต้ตอบ</h3>
-<p class="text-[#89726b] mt-2">แสดงตำแหน่งสัตว์และโซนปลอดภัยในมหาวิทยาลัย</p></div>
-<div class="absolute top-1/4 left-1/3 pulse-marker"><div class="w-16 h-16 bg-[#9f4122] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">pets</span></div></div>
-<div class="absolute top-1/2 left-2/3 pulse-marker" style="animation-delay:.5s"><div class="w-16 h-16 bg-[#ba1a1a] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">emergency</span></div></div>
-<div class="absolute bottom-[30%] left-[45%] pulse-marker" style="animation-delay:1.2s"><div class="w-16 h-16 bg-[#286b33] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">pets</span></div></div>
-</section>
 </main>
+<footer class="bg-[#c7dde9] py-3 px-6 text-center text-xs text-[#56423c]">© 2025 FindMyPet — แผนที่แสดงพื้นที่หน้ามหาวิทยาลัยพะเยา</footer>
+
+<script>
+// กำหนดพิกัดมหาวิทยาลัยพะเยา
+const UP_CENTER = { lat: 19.1698, lng: 99.9025 };
+
+function initMap() {
+  const map = new google.maps.Map(document.getElementById('map'), {
+    center: UP_CENTER,
+    zoom: 16,
+    mapTypeId: 'roadmap',
+    mapTypeControl: true,
+    fullscreenControl: true,
+    streetViewControl: true,
+    zoomControl: true,
+    styles: [
+      { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] },
+      { featureType: 'transit', elementType: 'all', stylers: [{ visibility: 'simplified' }] }
+    ]
+  });
+
+  // Marker หลัก - หน้ามอ
+  new google.maps.Marker({
+    position: UP_CENTER,
+    map,
+    title: 'หน้ามหาวิทยาลัยพะเยา',
+    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 12,
+      fillColor: '#9f4122',
+      fillOpacity: 1,
+      strokeColor: '#ffffff',
+      strokeWeight: 3,
+    },
+    animation: google.maps.Animation.DROP,
+  });
+
+  // จุดเฝ้าระวังตัวอย่าง
+  const spots = [
+    { lat: 19.1710, lng: 99.9040, label: 'ประตูทางเข้า 1', type: 'watch' },
+    { lat: 19.1685, lng: 99.9015, label: 'ลานจอดรถหน้า ม.', type: 'safe' },
+    { lat: 19.1705, lng: 99.9005, label: 'จุดพักริมถนน', type: 'watch' },
+    { lat: 19.1678, lng: 99.9035, label: 'ร้านค้าชุมชน', type: 'safe' },
+    { lat: 19.1690, lng: 99.9060, label: 'ป้ายรถเมล์', type: 'watch' },
+  ];
+
+  spots.forEach(s => {
+    const color = s.type === 'safe' ? '#286b33' : '#9f4122';
+    const marker = new google.maps.Marker({
+      position: { lat: s.lat, lng: s.lng },
+      map,
+      title: s.label,
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: color,
+        fillOpacity: 0.9,
+        strokeColor: '#ffffff',
+        strokeWeight: 2,
+      },
+    });
+
+    const infoWindow = new google.maps.InfoWindow({
+      content: `<div style="font-family:Inter,sans-serif;padding:4px">
+        <strong style="color:#071e27">${s.label}</strong>
+        <p style="color:#56423c;font-size:12px;margin:2px 0 0">${s.type === 'safe' ? '✅ โซนปลอดภัย' : '👁️ จุดเฝ้าระวัง'}</p>
+      </div>`
+    });
+
+    marker.addListener('click', () => infoWindow.open(map, marker));
+  });
+
+  // วงกลมรัศมีรอบหน้ามอ
+  new google.maps.Circle({
+    strokeColor: '#9f4122',
+    strokeOpacity: 0.2,
+    strokeWeight: 1,
+    fillColor: '#9f4122',
+    fillOpacity: 0.08,
+    map,
+    center: UP_CENTER,
+    radius: 300,
+  });
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
 </body>
 </html>
