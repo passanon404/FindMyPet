@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="th"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>แจ้งเบาะพิกัด / เคสฉุกเฉิน - UniPets Locator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config from Source of Truth -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f3faff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#dbf1fe",
+                    "tertiary-fixed": "#cde5ff",
+                    "primary": "#9f4122",
+                    "on-background": "#071e27",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#56423c",
+                    "secondary-fixed": "#abf4ac",
+                    "surface-bright": "#f3faff",
+                    "surface-variant": "#cfe6f2",
+                    "primary-fixed": "#ffdbd0",
+                    "on-primary-fixed-variant": "#7f2a0d",
+                    "on-secondary-fixed": "#002107",
+                    "on-tertiary-fixed": "#001d32",
+                    "on-secondary-fixed-variant": "#07521d",
+                    "surface-container-highest": "#cfe6f2",
+                    "secondary-container": "#abf4ac",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#ffb59e",
+                    "on-surface": "#071e27",
+                    "tertiary-container": "#60b1f2",
+                    "on-tertiary-fixed-variant": "#004b74",
+                    "inverse-on-surface": "#dff4ff",
+                    "outline-variant": "#ddc0b8",
+                    "surface-container-low": "#e6f6ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#90d792",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb59e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#2e7238",
+                    "on-primary-fixed": "#3a0b00",
+                    "inverse-surface": "#1e333c",
+                    "background": "#f3faff",
+                    "error-container": "#ffdad6",
+                    "secondary": "#286b33",
+                    "surface-container-high": "#d5ecf8",
+                    "tertiary-fixed-dim": "#94ccff",
+                    "on-tertiary-container": "#004268",
+                    "on-primary-container": "#752305",
+                    "surface-tint": "#9f4122",
+                    "tertiary": "#006398",
+                    "surface-dim": "#c7dde9",
+                    "outline": "#89726b",
+                    "primary-container": "#ff8a65"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "container-max": "1200px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "gutter": "20px",
+                    "sm": "8px",
+                    "xl": "40px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .bento-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .bento-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar from JSON -->
+<header class="flex justify-between items-center px-lg py-md w-full sticky top-0 z-50 bg-surface dark:bg-inverse-surface shadow-sm">
+<div class="flex items-center gap-md">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed-dim">UniPets Locator</span>
+</div>
+<nav class="hidden md:flex items-center gap-lg">
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors cursor-pointer active:opacity-80 font-label-md text-label-md" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors cursor-pointer active:opacity-80 font-label-md text-label-md" href="#">Map</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Report Case</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors cursor-pointer active:opacity-80 font-label-md text-label-md" href="#">About</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-primary p-2 hover:bg-surface-container rounded-full transition-colors">account_circle</button>
+</div>
+</header>
+<main class="min-h-screen max-w-container-max mx-auto px-md py-xl lg:px-lg">
+<div class="max-w-4xl mx-auto">
+<!-- Header Section -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="font-headline-lg text-headline-lg md:text-headline-xl text-on-background mb-base">แจ้งเบาะพิกัด / เคสฉุกเฉิน</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">ข้อมูลของคุณจะช่วยให้เพื่อนสี่ขาในแคมปัสได้รับความช่วยเหลืออย่างรวดเร็ว</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-lg">
+<!-- Main Form Card (Bento Pattern) -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm p-lg border border-surface-container-highest">
+<form class="space-y-lg" id="emergencyReportForm">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<!-- Pet Nickname -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="nickname">Pet Nickname (ถ้ามี)</label>
+<input class="rounded-lg border-2 border-surface-variant focus:border-primary focus:ring-0 px-md py-sm bg-surface-bright transition-all" id="nickname" placeholder="เช่น ส้มหยุด, เจ้าตูบ" type="text"/>
+</div>
+<!-- Status Dropdown -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="status">Status</label>
+<select class="rounded-lg border-2 border-surface-variant focus:border-primary focus:ring-0 px-md py-sm bg-surface-bright transition-all" id="status">
+<option value="normal">ปกติ (สบายดี)</option>
+<option value="sick">ป่วย (ซึม, บาดเจ็บเล็กน้อย)</option>
+<option selected="" value="emergency">ต้องการความช่วยเหลือ (ฉุกเฉิน)</option>
+</select>
+</div>
+</div>
+<!-- Location Text -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="location">Location (สถานที่พบเห็น)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary">location_on</span>
+<input class="w-full pl-xl pr-md py-sm rounded-lg border-2 border-surface-variant focus:border-primary focus:ring-0 bg-surface-bright transition-all" id="location" placeholder="เช่น หลังอาคาร 1, ลานจอดรถวิศวะ" type="text"/>
+</div>
+</div>
+<!-- Mini Map Interaction Area -->
+<div class="rounded-xl overflow-hidden h-64 border border-surface-variant bg-surface-container relative group">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist 3D map of a university campus featuring sage green lawns and soft orange map pins indicating pet sightings. The lighting is bright and cheerful, using a professional UI design aesthetic with high-contrast pathways and clear building outlines. The overall mood is safe, helpful, and community-driven." data-location="University Campus" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg')"></div>
+<div class="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-all pointer-events-none"></div>
+<div class="absolute bottom-md left-md right-md flex justify-center">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-full font-label-md flex items-center gap-sm shadow-md hover:scale-105 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[20px]">add_location_alt</span>
+                                    ระบุตำแหน่งในแผนที่
+                                </button>
+</div>
+</div>
+<!-- Description -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="description">Description (รายละเอียดเพิ่มเติม)</label>
+<textarea class="rounded-lg border-2 border-surface-variant focus:border-primary focus:ring-0 px-md py-sm bg-surface-bright transition-all resize-none" id="description" placeholder="ระบุลักษณะ อาการ หรือพฤติกรรมที่พบเห็น..." rows="4"></textarea>
+</div>
+<!-- Form Actions -->
+<div class="flex flex-col md:flex-row gap-md pt-md">
+<button class="flex-1 bg-secondary text-on-secondary py-md rounded-xl font-headline-md text-[18px] hover:bg-on-secondary-container transition-all shadow-md active:scale-95" type="submit">
+                                บันทึกข้อมูล
+                            </button>
+<button class="md:w-1/3 border-2 border-outline text-outline py-md rounded-xl font-headline-md text-[18px] hover:bg-surface-container-highest transition-all active:scale-95" onclick="window.history.back()" type="button">
+                                ยกเลิก
+                            </button>
+</div>
+</form>
+</div>
+<!-- Sidebar Content (Bento Pattern) -->
+<div class="md:col-span-4 flex flex-col gap-lg">
+<!-- Image Upload Box -->
+<div class="bg-surface-container-low rounded-xl border-2 border-dashed border-outline-variant p-lg flex flex-col items-center justify-center text-center gap-md group hover:border-primary transition-colors cursor-pointer min-h-[300px]">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[32px]">add_a_photo</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface-variant mb-xs">แนบรูปภาพสัตว์เลี้ยง</p>
+<p class="text-label-sm font-label-sm text-outline">ลากไฟล์มาวางหรือคลิกเพื่ออัปโหลด (สูงสุด 3 รูป)</p>
+</div>
+</div>
+<!-- Emergency Tips Card -->
+<div class="bg-primary-container/10 border border-primary-fixed rounded-xl p-lg">
+<div class="flex items-center gap-sm text-primary mb-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<h3 class="font-headline-md text-[20px]">คำแนะนำเบื้องต้น</h3>
+</div>
+<ul class="space-y-md">
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">รักษาระยะห่าง ไม่ควรเข้าหาหากสัตว์มีท่าทีดุร้าย</p>
+</li>
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">สังเกตสิ่งแวดล้อมรอบตัว เช่น จุดสังเกตในแคมปัส</p>
+</li>
+<li class="flex gap-sm">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant">หากมีเลือดออกหรือแผลฉกรรจ์ ให้โทรแจ้งศูนย์กู้ภัยทันที</p>
+</li>
+</ul>
+</div>
+<!-- Contact Security Helper -->
+<div class="bg-inverse-surface rounded-xl p-lg text-inverse-on-surface">
+<p class="text-label-sm mb-sm opacity-80 uppercase tracking-wider">ติดต่อสายด่วนแคมปัส</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim">call</span>
+<span class="font-headline-md text-[24px]">02-XXX-XXXX</span>
+</div>
+<span class="text-label-sm bg-primary px-sm py-xs rounded-lg">24 HRS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer from JSON -->
+<footer class="w-full py-xl px-lg mt-auto flex flex-col md:flex-row justify-between items-center bg-surface-dim dark:bg-inverse-surface">
+<div class="flex flex-col gap-sm mb-lg md:mb-0">
+<span class="font-headline-md text-headline-md text-on-surface">UniPets Locator</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 University Campus Safety. Dedicated to animal welfare.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-lg">
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary underline transition-all" href="#">Contact Security</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary underline transition-all" href="#">Campus Map</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary underline transition-all" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant font-label-sm text-label-sm hover:text-primary underline transition-all" href="#">Animal Rescue Resources</a>
+</div>
+</footer>
+<!-- Form Micro-interactions -->
+<script>
+        document.getElementById('emergencyReportForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            // Loading state
+            btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> กำลังบันทึก...';
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+
+            // Simulate API call
+            setTimeout(() => {
+                btn.innerHTML = '<span class="material-symbols-outlined">check_circle</span> บันทึกสำเร็จ!';
+                btn.classList.remove('bg-secondary');
+                btn.classList.add('bg-on-secondary-container');
+                
+                setTimeout(() => {
+                    // Reset or Redirect
+                    alert('ข้อมูลของท่านถูกบันทึกเข้าระบบแล้ว ขอบคุณที่ร่วมเป็นส่วนหนึ่งของการดูแลสัตว์เลี้ยงในแคมปัส');
+                    window.location.reload();
+                }, 1000);
+            }, 1500);
+        });
+
+        // Dropdown color interaction based on value
+        const statusSelect = document.getElementById('status');
+        statusSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === 'emergency') {
+                statusSelect.classList.add('text-error', 'font-bold');
+            } else {
+                statusSelect.classList.remove('text-error', 'font-bold');
+            }
+        });
+    </script>
+</body></html>

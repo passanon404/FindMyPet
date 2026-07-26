@@ -1,0 +1,311 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>UniPets Locator - Campus Animal Safety</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f3faff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#dbf1fe",
+                    "tertiary-fixed": "#cde5ff",
+                    "primary": "#9f4122",
+                    "on-background": "#071e27",
+                    "on-error": "#ffffff",
+                    "on-surface-variant": "#56423c",
+                    "secondary-fixed": "#abf4ac",
+                    "surface-bright": "#f3faff",
+                    "surface-variant": "#cfe6f2",
+                    "primary-fixed": "#ffdbd0",
+                    "on-primary-fixed-variant": "#7f2a0d",
+                    "on-secondary-fixed": "#002107",
+                    "on-tertiary-fixed": "#001d32",
+                    "on-secondary-fixed-variant": "#07521d",
+                    "surface-container-highest": "#cfe6f2",
+                    "secondary-container": "#abf4ac",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#ffb59e",
+                    "on-surface": "#071e27",
+                    "tertiary-container": "#60b1f2",
+                    "on-tertiary-fixed-variant": "#004b74",
+                    "inverse-on-surface": "#dff4ff",
+                    "outline-variant": "#ddc0b8",
+                    "surface-container-low": "#e6f6ff",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#90d792",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#ffb59e",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#2e7238",
+                    "on-primary-fixed": "#3a0b00",
+                    "inverse-surface": "#1e333c",
+                    "background": "#f3faff",
+                    "error-container": "#ffdad6",
+                    "secondary": "#286b33",
+                    "surface-container-high": "#d5ecf8",
+                    "tertiary-fixed-dim": "#94ccff",
+                    "on-tertiary-container": "#004268",
+                    "on-primary-container": "#752305",
+                    "surface-tint": "#9f4122",
+                    "tertiary": "#006398",
+                    "surface-dim": "#c7dde9",
+                    "outline": "#89726b",
+                    "primary-container": "#ff8a65"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "container-max": "1200px",
+                    "lg": "24px",
+                    "md": "16px",
+                    "gutter": "20px",
+                    "sm": "8px",
+                    "xl": "40px",
+                    "xs": "4px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-xl": ["Plus Jakarta Sans"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3faff; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .pulse-marker { animation: pulse 2s infinite ease-in-out; }
+        @keyframes pulse { 
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.4); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .bento-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bento-card:hover { transform: translateY(-4px); }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden text-on-surface">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-inverse-surface shadow-sm flex justify-between items-center px-lg py-md w-full sticky top-0 z-50">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">pets</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">UniPets Locator</h1>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md cursor-pointer active:opacity-80 transition-colors" href="#">Home</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors font-body-md text-body-md cursor-pointer active:opacity-80" href="#">Map</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors font-body-md text-body-md cursor-pointer active:opacity-80" href="#">Report Case</a>
+<a class="text-on-surface-variant dark:text-surface-variant hover:text-primary-container transition-colors font-body-md text-body-md cursor-pointer active:opacity-80" href="#">About</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- SideNavBar: Nearby Activity -->
+<aside class="bg-surface-container-low dark:bg-surface-container-lowest h-full w-80 flex flex-col p-md gap-md overflow-y-auto shadow-md shrink-0">
+<div class="mb-sm">
+<h2 class="font-headline-md text-headline-md text-primary">Nearby Activity</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Tracking 12 strays today</p>
+</div>
+<!-- Pet Cards (Bento style items) -->
+<div class="flex flex-col gap-md">
+<!-- Pet Card: Normal -->
+<div class="bento-card bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/30 cursor-pointer">
+<div class="flex gap-md">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="A professional close-up photography of a fluffy white and ginger cat named ไข่ต้ม sitting calmly in a sunlit university courtyard. The lighting is soft and golden, highlighting the warmth of the campus. The style is modern and empathetic, with high focus on the pet's healthy appearance and calm demeanor." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7utzLbZ-WJ_Hv-QyLgHc5ZoOWpAxnvNqYH5eDzCoaMkvacoTTiBpCWigkrB0Sz_auHxLiHo5dGS4tF9A0W68msMO1UWxx611iNYlKktJnWbw4mgQr82fJl7H4Q59_O75f42lfR9SoXHnWiIe3XvmXQcx1ttFFvlFdh_slddxMNpjPwWmWJ4A41VKBrn6IkI1pQ3Rk26sjznpPWnMxJo27481FMN9f6F89Fcrb2t1alvor3DaXnTgoDwWGN6o4Sqr8r0C5qy_Nj3Q')"></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-label-md text-label-md text-on-surface">ไข่ต้ม</h3>
+<div class="mt-1">
+<span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">Normal</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Seen 10m ago
+                            </p>
+</div>
+</div>
+</div>
+<!-- Pet Card: Needs Help -->
+<div class="bento-card bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/30 cursor-pointer">
+<div class="flex gap-md">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="A high-resolution photograph of a small cream-colored cat named กะทิ looking slightly distressed near a campus cafeteria. The environment is clean but busy, suggesting the cat needs attention. The lighting is bright and clear, adhering to a light-mode aesthetic. The image captures a sense of community responsibility and empathy towards campus strays." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBjYrL8nbhLEsk3yxO_h8xCtZzXklnYUizAEN3H8alI357v__SUUVxZveqNC4I_C4oMTumhrEM8c9hrscZk7KDHAmAD7QbxaIkTbE631jG2k3iIjDTck0XuJcBu8oA5PLEVr2K5VCoNAdoCrnldBcgzMgZUkHP4Dp9_w8wsG3EgLhE29UwXhp2pm8YGPtmrBHUXkNNX5TCRHjhf3OmfGcwWfp-7UPCSySDCbuZylyp21b8l75W_uX6Ma-N5p8tLE6opnXcfLlgb3Fg')"></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-label-md text-label-md text-on-surface">กะทิ</h3>
+<div class="mt-1">
+<span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">Needs Help</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">location_on</span> Engineering Hall
+                            </p>
+</div>
+</div>
+</div>
+<!-- Pet Card: Sick -->
+<div class="bento-card bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/30 cursor-pointer">
+<div class="flex gap-md">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="A sympathetic and detailed digital photo of a grey tabby cat lying under a park bench on a university campus. The cat looks lethargic, indicating a sick status. The background features blurred greenery and soft campus architecture. The overall mood is concerned yet hopeful for rescue, with a soft, modern visual style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDipXE4evllQwXGMUEonIJukvOkx6ZSfhE-_VogiFAZ1iB9wO2iZESq_WA-DPy8v0PkN-DNc969dm_T0j2bVBkoY0scyj_ze0QvHiDXc0GwIxxE1cuOhtceG0Fv3rT9V1wAQKowbZZ0X1LIE2WIDK3RC5qGzJS855D51bRqAp3N3h0nU3sReHzNYYN3RqgQQzd91JyS08uti0oVGN7UT3Hb8bFted_ZJSV6l8lJs4o3GbvJuEsfpxaooDJ8w8IihN4maFHw5BDKX-8')"></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-label-md text-label-md text-on-surface">หมอก</h3>
+<div class="mt-1">
+<span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">Sick</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Reported 2h ago
+                            </p>
+</div>
+</div>
+</div>
+<!-- Pet Card: Active -->
+<div class="bento-card bg-surface-container-lowest p-md rounded-xl shadow-sm border border-outline-variant/30 cursor-pointer">
+<div class="flex gap-md">
+<div class="w-16 h-16 rounded-lg bg-cover bg-center shrink-0" data-alt="A vibrant and crisp photograph of a playful brown dog running across a grassy campus lawn. The sun is shining, creating a cheerful atmosphere. The dog is active and healthy. The image style is clean, modern, and highlights the successful integration of animals in the university environment. Bright, safe, and community-focused." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAAxbuqXbyP7exv6b9leOkIMG0VqG4OmDS3lrpZFyQbYH4IJ04BJb9gxFgKP-VEllJRjI9SL-0cQcOkM-HNDYAUhv9Ljfp3pzcBqfB-lIbAX9j7epZnFbQkojdG5JFhMh19k0_TT9KDu-_v4IF9QBFWl1i27y8jhTpfnXFqJr6WDZoOSfAWb2XBiTcz4XbrXRgS3wkFAwBoeVekFJTsjfRHeKRgl8ZP8Yk5e8sdGJGhbT83_5HBPVda3oanPy530whzeNjKVCVa4C8')"></div>
+<div class="flex flex-col justify-center">
+<h3 class="font-label-md text-label-md text-on-surface">โอเลี้ยง</h3>
+<div class="mt-1">
+<span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">Normal</span>
+</div>
+<p class="text-[10px] text-on-surface-variant mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">location_on</span> Main Library
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Emergency CTA -->
+<button class="mt-auto bg-error text-on-error w-full py-md rounded-xl font-headline-md flex items-center justify-center gap-md hover:opacity-90 active:scale-95 transition-all shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+                Emergency Report
+            </button>
+<!-- Sidebar Footer Tabs -->
+<div class="flex justify-between border-t border-outline-variant pt-md">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">contact_support</span>
+<span class="text-[10px] font-medium">Support</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">history</span>
+<span class="text-[10px] font-medium">History</span>
+</button>
+</div>
+</aside>
+<!-- Interactive Map Content -->
+<section class="flex-1 relative bg-surface-container">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="A detailed topographic map of a modern university campus featuring clean lines, sage green parks, and pale blue water features. The map is minimalist with subtle soft orange highlights for pins. The lighting across the map is even and bright, emphasizing a safe and well-planned navigation system for animal safety." data-location="Bangkok" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNV8F9FpNFV4S8HdR5I4YiV-TgA7tcJLVSUKCIuaiKJgZTad_8BYpg7t3_KEoASsYgYRhiHGcoJZ-Ef_0HBhVgPyMuQmbgOHkoBnKU5iZ1K5x4osELAa5mZ8DfakzOUhAw4CaL85oakJZB7ykT4fA0i1ipxcrMyZ_hoIOSXNPgdKuZJO85h4R1nOgjU-kD1-lBONoaoLF9kXOpfWHEhxxhngauaafgR6ISOP8MdkRKtUxRGBfHW95IAfr_NNwm7v3Y3C1q336zZWA')">
+<!-- Simulated Pulse Pins -->
+<div class="absolute top-1/4 left-1/3 pulse-marker">
+<div class="w-16 h-16 bg-primary rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+</div>
+<div class="absolute top-1/2 left-2/3 pulse-marker" style="animation-delay: 0.5s;">
+<div class="w-16 h-16 bg-error rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2 pulse-marker" style="animation-delay: 1.2s;">
+<div class="w-16 h-16 bg-secondary rounded-full border-4 border-white shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+</div>
+</div>
+<!-- Floating Controls -->
+<div class="absolute right-md top-md flex flex-col gap-sm">
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-lg flex items-center justify-center text-primary shadow-sm hover:bg-white transition-colors">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+<!-- Map Overlay Legend -->
+<div class="absolute bottom-md left-md glass-panel p-md rounded-xl shadow-lg flex flex-col gap-sm max-w-xs">
+<h4 class="font-label-md text-label-md text-on-surface">Campus Activity</h4>
+<div class="flex items-center gap-md">
+<div class="rounded-full bg-secondary w-8 h-8"></div>
+<span class="text-xs text-on-surface-variant">4 Healthy Strays Spotted</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="rounded-full bg-primary-container w-8 h-8"></div>
+<span class="text-xs text-on-surface-variant">2 Needs Checkup</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="rounded-full bg-error w-8 h-8"></div>
+<span class="text-xs text-on-surface-variant">1 Emergency Active</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-dim dark:bg-inverse-surface w-full py-md px-lg flex flex-col md:flex-row justify-between items-center shadow-inner">
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 University Campus Safety. Dedicated to animal welfare.</p>
+<div class="flex gap-lg mt-md md:mt-0">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-all" href="#">Contact Security</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-all" href="#">Animal Resources</a>
+</div>
+</footer>
+<script>
+        // Simple Interaction: Click pet cards to simulate map centering
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const name = card.querySelector('h3').innerText;
+                console.log(`Centering map on ${name}`);
+                // In a real app, this would update map coordinates
+                card.classList.add('bg-secondary-container', 'scale-95');
+                setTimeout(() => {
+                    card.classList.remove('bg-secondary-container', 'scale-95');
+                }, 200);
+            });
+        });
+
+        // Emergency button micro-interaction
+        const emergencyBtn = document.querySelector('.bg-error');
+        emergencyBtn.addEventListener('click', () => {
+            alert('Emergency Protocol Activated: Nearby safety teams and volunteer vets are being notified.');
+        });
+    </script>
+
+
+</body></html>

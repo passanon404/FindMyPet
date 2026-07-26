@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FindMyPet - ประกาศและข่าวสาร</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  body{background:#f3faff;font-family:Inter,sans-serif;color:#071e27}
+  .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
+  .no-scrollbar::-webkit-scrollbar{display:none}
+  .active-filter{background-color:#9f4122;color:white;box-shadow:0 4px 12px rgba(159,65,34,.2)}
+</style>
+</head>
+<body class="min-h-screen bg-[#f3faff]">
+<header class="fixed top-0 left-0 right-0 z-50 bg-[#f3faff]/80 backdrop-blur-md shadow-sm">
+<nav class="flex justify-between items-center w-full px-6 py-3 max-w-[1200px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#9f4122] text-3xl" style="font-variation-settings:'FILL'1">pets</span>
+<span class="font-bold text-[24px] font-['Plus_Jakarta_Sans'] text-[#9f4122]">FindMyPet</span>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<a href="index.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">หน้าข่าวสาร</a>
+<a href="th/map.html" class="text-[#56423c] hover:text-[#9f4122]">แผนที่</a>
+<a href="th/zones.html" class="text-[#56423c] hover:text-[#9f4122]">โซนกิจกรรม</a>
+<a href="th/report.html" class="text-[#56423c] hover:text-[#9f4122]">แจ้งเบาะแส</a>
+</div>
+<div class="flex items-center gap-3">
+<a href="en/news.html" class="text-sm text-[#56423c] hover:text-[#9f4122]"><span class="material-symbols-outlined text-lg">language</span> EN</a>
+<span class="material-symbols-outlined text-[#56423c]">account_circle</span>
+</div>
+</nav>
+</header>
+
+<main class="pt-28 pb-8 px-6">
+<div class="max-w-4xl mx-auto">
+<div class="mb-8 text-center md:text-left">
+<h1 class="text-[40px] font-['Plus_Jakarta_Sans'] font-bold text-[#071e27] mb-2" style="letter-spacing:-0.02em">ประกาศและข่าวสาร</h1>
+<p class="text-[16px] text-[#56423c]">เกาะติดสถานการณ์สัตว์เลี้ยงและกิจกรรมต่างๆ ในรั้วมหาวิทยาลัย</p>
+</div>
+
+<div class="flex items-center gap-3 overflow-x-auto pb-4 mb-6 no-scrollbar">
+<button class="px-4 py-2 rounded-full text-sm font-semibold border border-[#ddc0b8] text-[#56423c] active-filter transition-all">ทั้งหมด</button>
+<button class="px-4 py-2 rounded-full text-sm font-semibold border border-[#ddc0b8] text-[#56423c] hover:bg-[#d5ecf8] transition-all">สัตว์หาย</button>
+<button class="px-4 py-2 rounded-full text-sm font-semibold border border-[#ddc0b8] text-[#56423c] hover:bg-[#d5ecf8] transition-all">ประชาสัมพันธ์</button>
+<button class="px-4 py-2 rounded-full text-sm font-semibold border border-[#ddc0b8] text-[#56423c] hover:bg-[#d5ecf8] transition-all">กิจกรรม</button>
+</div>
+
+<div class="grid grid-cols-1 gap-6">
+<article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row group border border-[#ddc0b8]/20">
+<div class="md:w-1/3 h-64 md:h-auto relative overflow-hidden bg-[#dbf1fe] flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-[#9f4122]" style="font-variation-settings:'FILL'1">pets</span>
+<div class="absolute top-4 left-4"><span class="bg-[#ba1a1a] text-white text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">priority_high</span> สัตว์หาย</span></div>
+</div>
+<div class="p-6 md:w-2/3 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27]">ตามหาสุนัขชื่อ 'เจ้าตูบ'</h2>
+<span class="text-xs text-[#89726b]">2 ชั่วโมงที่แล้ว</span>
+</div>
+<p class="text-[16px] text-[#56423c] mb-4">พบเจ้าตูบหายไปจากบริเวณหน้าตึกเรียนรวม สีน้ำตาลลายขาว ใส่ปลอกคอสีฟ้า นิสัยเป็นมิตร ใครพบเห็นรบกวนติดต่อเจ้าของด้วยครับ</p>
+<div class="flex items-center gap-4 text-xs text-[#56423c] mb-4"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span> ตึกเรียนรวม</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">person</span> คุณสมชาย</span></div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-[#9f4122] text-white text-sm font-semibold py-2 rounded-lg hover:bg-opacity-90 flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[18px]">call</span> ติดต่อเจ้าของ</button>
+<button class="flex-1 bg-[#dbf1fe] text-[#071e27] text-sm font-semibold py-2 rounded-lg hover:bg-[#cfe6f2] flex items-center justify-center gap-2"><span class="material-symbols-outlined text-[18px]">visibility</span> พบเห็นล่าสุด</button>
+</div>
+</div>
+</article>
+
+<article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row group border border-[#ddc0b8]/20">
+<div class="md:w-1/3 h-64 md:h-auto relative overflow-hidden bg-[#abf4ac]/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-[#286b33]" style="font-variation-settings:'FILL'1">campaign</span>
+<div class="absolute top-4 left-4"><span class="bg-[#286b33] text-white text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">campaign</span> ประชาสัมพันธ์</span></div>
+</div>
+<div class="p-6 md:w-2/3 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27]">โครงการทำหมันฟรีสำหรับสัตว์จรจัด</h2>
+<span class="text-xs text-[#89726b]">1 วันที่แล้ว</span>
+</div>
+<p class="text-[16px] text-[#56423c] mb-4">ชมรมรักสัตว์มหาวิทยาลัย ร่วมกับคลินิกสัตว์เลี้ยง จัดโครงการทำหมันฟรีสำหรับสัตว์จรจัดในรั้วมหาวิทยาลัย ในวันที่ 15-16 สิงหาคมนี้ ลงทะเบียนได้ที่จุดบริการนักศึกษา</p>
+<div class="flex items-center gap-4 text-xs text-[#56423c] mb-4"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span> อาคารกิจกรรมนักศึกษา</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">calendar_month</span> 15-16 ส.ค. 68</span></div>
+</div>
+<button class="w-full bg-[#9f4122] text-white text-sm font-semibold py-2 rounded-lg hover:bg-opacity-90">ดูรายละเอียด</button>
+</div>
+</article>
+
+<article class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col md:flex-row group border border-[#ddc0b8]/20">
+<div class="md:w-1/3 h-64 md:h-auto relative overflow-hidden bg-[#60b1f2]/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-6xl text-[#006398]" style="font-variation-settings:'FILL'1">celebration</span>
+<div class="absolute top-4 left-4"><span class="bg-[#006398] text-white text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-lg"><span class="material-symbols-outlined text-[14px]">celebration</span> กิจกรรม</span></div>
+</div>
+<div class="p-6 md:w-2/3 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27]">กิจกรรมอาสาดูแลสัตว์จรจัด ประจำเดือน</h2>
+<span class="text-xs text-[#89726b]">3 วันที่แล้ว</span>
+</div>
+<p class="text-[16px] text-[#56423c] mb-4">ชวนเพื่อนๆ มาร่วมกิจกรรมอาสาดูแลสัตว์จรจัดในมหาวิทยาลัย พบกับกิจกรรมให้อาหาร ทำความสะอาดจุดพักพิง และเรียนรู้การดูแลเบื้องต้น</p>
+<div class="flex items-center gap-4 text-xs text-[#56423c] mb-4"><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span> จุดพักพิงสัตว์หลังคณะวิทย์</span><span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">schedule</span> เสาร์นี้ 09:00 น.</span></div>
+</div>
+<button class="w-full bg-[#9f4122] text-white text-sm font-semibold py-2 rounded-lg hover:bg-opacity-90">ลงทะเบียนร่วมกิจกรรม</button>
+</div>
+</article>
+</div>
+</div>
+</main>
+
+<footer class="bg-[#c7dde9] py-4 px-6 flex flex-col md:flex-row justify-between items-center">
+<p class="text-xs text-[#56423c]">© 2025 FindMyPet - เพื่อนที่ดีที่สุดของสัตว์จรจัด</p>
+<div class="flex gap-6 mt-2 md:mt-0">
+<a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">ติดต่อเรา</a>
+<a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">นโยบายความเป็นส่วนตัว</a>
+</div>
+</footer>
+</body>
+</html>

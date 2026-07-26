@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>FindMyPet - โซนกิจกรรมและพื้นที่ปลอดภัย</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  body{background:#f3faff;font-family:Inter,sans-serif;color:#071e27}
+  .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
+  .zone-card{transition:all .3s cubic-bezier(.4,0,.2,1)}
+  .zone-card:hover{transform:translateY(-4px)}
+</style>
+</head>
+<body class="min-h-screen bg-[#f3faff]">
+<header class="sticky top-0 z-50 bg-[#f3faff]/80 backdrop-blur-md shadow-sm">
+<nav class="flex justify-between items-center w-full px-6 py-3 max-w-[1200px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#9f4122] text-3xl" style="font-variation-settings:'FILL'1">pets</span>
+<span class="font-bold text-[24px] font-['Plus_Jakarta_Sans'] text-[#9f4122]">FindMyPet</span>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<a href="../index.html" class="text-[#56423c] hover:text-[#9f4122]">ข่าวสาร</a>
+<a href="map.html" class="text-[#56423c] hover:text-[#9f4122]">แผนที่</a>
+<a href="zones.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">โซนกิจกรรม</a>
+<a href="report.html" class="text-[#56423c] hover:text-[#9f4122]">แจ้งเบาะแส</a>
+</div>
+<div class="flex items-center gap-3">
+<a href="../en/zones.html" class="text-sm text-[#56423c] hover:text-[#9f4122]"><span class="material-symbols-outlined text-lg">language</span> EN</a>
+<span class="material-symbols-outlined text-[#56423c]">account_circle</span>
+</div>
+</nav>
+</header>
+<main class="py-8 px-6">
+<div class="max-w-[1200px] mx-auto">
+<div class="mb-8"><h1 class="text-[40px] font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]" style="letter-spacing:-0.02em">โซนกิจกรรมและพื้นที่ปลอดภัย</h1><p class="text-[16px] text-[#56423c]">สำรวจพื้นที่ในมหาวิทยาลัยที่อุทิศให้กับความปลอดภัยของสัตว์และการดูแลชุมชน</p></div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#abf4ac]/40 flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#286b33]" style="font-variation-settings:'FILL'1">park</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">สวนสาธารณะสีเขียว</h3>
+<p class="text-[16px] text-[#56423c] mb-4">พื้นที่เปิดโล่งปลอดภัยที่สัตว์จรจัดได้รับอาหารและการดูแลจากอาสาสมัครอย่างสม่ำเสมอ</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#e8f5e9] text-[#2e7d32] px-3 py-1 rounded-full text-xs">โซนปลอดภัย</span><span class="text-[#89726b] text-xs">พบสัตว์ 8 ตัว</span></div>
+</div>
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#ffdbd0] flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">local_hospital</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">จุดพยาบาลสัตว์</h3>
+<p class="text-[16px] text-[#56423c] mb-4">สถานีสัตวแพทย์ในมหาวิทยาลัย ให้บริการตรวจสุขภาพเบื้องต้นสำหรับสัตว์จรจัด</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#ffdbd0] text-[#7f2a0d] px-3 py-1 rounded-full text-xs">การแพทย์</span><span class="text-[#89726b] text-xs">เปิด 9:00-17:00 น.</span></div>
+</div>
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#cde5ff] flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#006398]" style="font-variation-settings:'FILL'1">shelter</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">ศูนย์พักพิงสัตว์</h3>
+<p class="text-[16px] text-[#56423c] mb-4">ที่พักพิงชั่วคราวสำหรับสัตว์ที่ได้รับการช่วยเหลือ รอการรับเลี้ยงหรือปล่อยคืน</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#cde5ff] text-[#004b74] px-3 py-1 rounded-full text-xs">พักพิง</span><span class="text-[#89726b] text-xs">ผู้อยู่อาศัย 12 ตัว</span></div>
+</div>
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#e6f6ff] flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#07521d]" style="font-variation-settings:'FILL'1">restaurant</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">จุดให้อาหาร</h3>
+<p class="text-[16px] text-[#56423c] mb-4">จุดให้อาหารที่กำหนดไว้ ซึ่งดูแลโดยสมาชิกชมรมรักสัตว์</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#e8f5e9] text-[#2e7d32] px-3 py-1 rounded-full text-xs">จุดให้อาหาร</span><span class="text-[#89726b] text-xs">6 จุด</span></div>
+</div>
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#ffdbd0] flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">volunteer_activism</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">ศูนย์อาสาสมัคร</h3>
+<p class="text-[16px] text-[#56423c] mb-4">พบปะอาสาสมัครคนอื่นๆ ลงชื่อเข้ากะ และประสานงานการดูแลสัตว์</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#ffdbd0] text-[#7f2a0d] px-3 py-1 rounded-full text-xs">อาสาสมัคร</span><span class="text-[#89726b] text-xs">มาร่วมกับเรา!</span></div>
+</div>
+<div class="zone-card bg-white p-6 rounded-2xl shadow-sm border border-[#ddc0b8]/20 hover:shadow-md">
+<div class="w-16 h-16 rounded-2xl bg-[#cde5ff] flex items-center justify-center mb-4"><span class="material-symbols-outlined text-3xl text-[#006398]" style="font-variation-settings:'FILL'1">school</span></div>
+<h3 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold text-[#071e27] mb-2">ศูนย์ให้ความรู้</h3>
+<p class="text-[16px] text-[#56423c] mb-4">พื้นที่ให้ความรู้ ส่งเสริมการเป็นเจ้าของสัตว์เลี้ยงที่รับผิดชอบและสวัสดิภาพสัตว์</p>
+<div class="flex items-center gap-2 text-sm"><span class="bg-[#cde5ff] text-[#004b74] px-3 py-1 rounded-full text-xs">การศึกษา</span><span class="text-[#89726b] text-xs">เปิดทุกวัน</span></div>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-[#c7dde9] py-4 px-6 flex flex-col md:flex-row justify-between items-center mt-8">
+<p class="text-xs text-[#56423c]">© 2025 FindMyPet</p>
+<div class="flex gap-6"><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">ติดต่อเรา</a><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">นโยบายความเป็นส่วนตัว</a></div>
+</footer>
+</body>
+</html>

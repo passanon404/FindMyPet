@@ -1,0 +1,354 @@
+<!DOCTYPE html><html lang="th"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>UniPets Locator - โซนกิจกรรมและพื้นที่ปลอดภัย</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#dbf1fe",
+                        "secondary-fixed": "#abf4ac",
+                        "surface-variant": "#cfe6f2",
+                        "secondary-container": "#abf4ac",
+                        "background": "#f3faff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#004268",
+                        "on-primary-container": "#752305",
+                        "inverse-on-surface": "#dff4ff",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001d32",
+                        "tertiary-container": "#60b1f2",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#56423c",
+                        "on-error": "#ffffff",
+                        "on-background": "#071e27",
+                        "primary-fixed": "#ffdbd0",
+                        "tertiary-fixed": "#cde5ff",
+                        "inverse-primary": "#ffb59e",
+                        "surface-bright": "#f3faff",
+                        "surface": "#f3faff",
+                        "on-secondary-fixed": "#002107",
+                        "primary": "#9f4122",
+                        "surface-container-low": "#e6f6ff",
+                        "outline": "#89726b",
+                        "tertiary-fixed-dim": "#94ccff",
+                        "tertiary": "#006398",
+                        "secondary": "#286b33",
+                        "outline-variant": "#ddc0b8",
+                        "surface-container-highest": "#cfe6f2",
+                        "on-primary-fixed-variant": "#7f2a0d",
+                        "surface-tint": "#9f4122",
+                        "on-secondary-fixed-variant": "#07521d",
+                        "on-tertiary-fixed-variant": "#004b74",
+                        "on-secondary-container": "#2e7238",
+                        "primary-fixed-dim": "#ffb59e",
+                        "inverse-surface": "#1e333c",
+                        "on-surface": "#071e27",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#90d792",
+                        "on-secondary": "#ffffff",
+                        "surface-container-high": "#d5ecf8",
+                        "on-primary-fixed": "#3a0b00",
+                        "surface-dim": "#c7dde9",
+                        "primary-container": "#ff8a65",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "20px",
+                        "sm": "8px",
+                        "base": "4px",
+                        "xl": "40px",
+                        "xs": "4px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-sm": ["Inter"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface docked full-width top-0 shadow-sm z-50">
+<div class="flex justify-between items-center w-full px-md py-sm max-w-container-max mx-auto">
+<div class="text-headline-md font-headline-md font-bold text-primary">UniPets Locator</div>
+<!-- Desktop Navigation -->
+<nav class="hidden md:flex gap-lg items-center">
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors duration-200 px-3 py-1 rounded-lg" href="#">Map</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Zones</a>
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors duration-200 px-3 py-1 rounded-lg" href="#">Reports</a>
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors duration-200 px-3 py-1 rounded-lg" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container border-none rounded-full text-body-md focus:ring-2 focus:ring-primary-container w-48 lg:w-64" placeholder="ค้นหาโซน..." type="text">
+</div>
+<button class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-surface-container-low transition-colors">notifications</button>
+<button class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-surface-container-low transition-colors">account_circle</button>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-md py-lg md:px-lg lg:py-xl">
+<!-- Hero Section -->
+<div class="mb-xl text-center md:text-left">
+<h1 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary mb-sm">โซนกิจกรรมและพื้นที่ปลอดภัย (Campus Zones)</h1>
+<p class="text-body-md text-on-surface-variant max-w-2xl">ดูแลเพื่อนตัวน้อยในรั้วมหาวิทยาลัยด้วยข้อมูลพื้นที่ที่แม่นยำ เพื่อความปลอดภัยและสวัสดิภาพของสัตว์ทุกตัว</p>
+</div>
+<!-- Section 1: Feeding Stations (Safe Zones) -->
+<section class="mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">restaurant</span>
+<h2 class="text-headline-md font-headline-md text-secondary">จุดบริการอาหารและน้ำ (Feeding Stations)</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+<!-- Station 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-variant overflow-hidden hover:shadow-lg transition-all duration-300 group" style="transform: translateY(0px);">
+<div class="relative h-48">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A tranquil, sun-drenched campus garden at a modern university, featuring a designated pet feeding station with clean ceramic bowls for water and food. The scene is lush with sage green foliage and bright orange flowering bushes, reflecting a warm and caring community atmosphere. The lighting is soft and golden, emphasizing a safe and serene environment for campus animals." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDXUY56i7sVZtgqcIMq3fIVjITeJLDGrBIiv3_jCXKpdjMpCh7Cgmuhc-I_x2D6p5s4z6lGovPgb3_IyuTL-7ITIZFvidw66mmdNBIuCKFKZtRhrhUrp-vBFQIExcRta_jK1AqNSEgRQxjSCxcz7SHTYLASJ5lEjH8miq86QDzu5CHcYmwxgfyamdIEC9CY8oJQL0N9aohZEvHDTOvsM0W_uJl5DUde2S0ZX_zqtk13IBnvom8QwvSBdFcgmDYhAcHE8UpOsJonEQA')"></div>
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> ปลอดภัย
+                        </div>
+</div>
+<div class="p-md">
+<h3 class="text-body-lg font-bold text-on-surface mb-xs">ลานจอดรถหอสมุดกลาง</h3>
+<p class="text-label-md text-on-surface-variant mb-md leading-snug">มีจุดให้น้ำสะอาดและอาหารเม็ดตลอด 24 ชั่วโมง ดูแลโดยชมรมคนรักสัตว์</p>
+<div class="flex justify-between items-center pt-md border-t border-surface-variant">
+<span class="text-label-sm text-on-surface-variant">อัปเดตเมื่อ: 10 นาทีที่แล้ว</span>
+<button class="text-primary font-bold text-label-md group-hover:underline">ดูรายละเอียด</button>
+</div>
+</div>
+</div>
+<!-- Station 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-variant overflow-hidden hover:shadow-lg transition-all duration-300 group" style="transform: translateY(0px);">
+<div class="relative h-48">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A clean and organized pet feeding area located near a modern university building facade. The area features a small wooden shelter for cats and dogs, surrounded by well-maintained grass and soft orange decorative stones. The aesthetic is modern and minimalist, utilizing a color palette of white, sage green, and warm terracotta tones under clear, bright daylight." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCLnpRWN7Hr4jYyKlacwVSFXDWCfUBA6NFZglWHznVbkB3Ap16N4-iA9WaSCUPDdKxlKm1i-gVtNhPe23UAHmYyTP7pLaHQCPKXot_JOug_0VecxtPDb6VkeGyhNQy2nz1EJOvppoj-U57mn0mDQL6eVGAyyzXqJodM0nNinEM6pSnILlC6e4FS6PFUy_TYs5MynUBARwOtxNEaipRbZscQCjs9gVlFMQzqELOwQuz37usRngoVK0YbJDgoUnh8SGL0cv4vYyRxcmc')"></div>
+<div class="absolute top-3 left-3 bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-sm font-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> ปลอดภัย
+                        </div>
+</div>
+<div class="p-md">
+<h3 class="text-body-lg font-bold text-on-surface mb-xs">สวนหย่อมหน้าคณะวิทย์</h3>
+<p class="text-label-md text-on-surface-variant mb-md leading-snug">พื้นที่ร่มรื่น สัตว์มักมาพักผ่อนช่วงบ่าย มีเจ้าหน้าที่ดูแลความสะอาดสม่ำเสมอ</p>
+<div class="flex justify-between items-center pt-md border-t border-surface-variant">
+<span class="text-label-sm text-on-surface-variant">อัปเดตเมื่อ: 1 ชม. ที่แล้ว</span>
+<button class="text-primary font-bold text-label-md group-hover:underline">ดูรายละเอียด</button>
+</div>
+</div>
+</div>
+</div>
+</section><section class="mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="text-headline-md font-headline-md text-primary">พื้นที่เฝ้าระวังสัตว์ดุ (Aggressive Animals Alert)</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-lg">
+<!-- Alert Card 1 -->
+<div class="bg-primary-container/20 rounded-xl p-md border border-primary-container flex items-start gap-md">
+<div class="bg-primary text-on-primary rounded-full p-2">
+<span class="material-symbols-outlined">priority_high</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-on-primary-container">อาคารจอดรถ 2</h3>
+<span class="text-primary font-bold text-label-sm">Warning</span>
+</div>
+<p class="text-label-sm font-bold text-primary mb-1">Aggressive/Territorial</p>
+<p class="text-label-md text-on-surface-variant leading-tight">พบสุนัขเจ้าถิ่นมีพฤติกรรมหวงถิ่นและขู่คนแปลกหน้าในช่วงค่ำ โปรดเลี่ยงการเดินผ่านลำพัง</p>
+</div>
+</div>
+<!-- Alert Card 2 -->
+<div class="bg-primary-container/20 rounded-xl p-md border border-primary-container flex items-start gap-md">
+<div class="bg-primary text-on-primary rounded-full p-2">
+<span class="material-symbols-outlined">pets</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-on-primary-container">ซอยหลังหอพักหญิง</h3>
+<span class="text-primary font-bold text-label-sm">Caution</span>
+</div>
+<p class="text-label-sm font-bold text-primary mb-1">High Alert</p>
+<p class="text-label-md text-on-surface-variant leading-tight">พบแม่แมวลูกอ่อนค่อนข้างดุและระแวงคน โปรดอย่าเข้าใกล้หรือพยายามจับลูกแมว</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: High-Traffic Pet Zones (Bento Grid Style) -->
+<section class="mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">pets</span>
+<h2 class="text-headline-md font-headline-md text-primary">พื้นที่พบสัตว์บ่อย (High-Traffic Zones)</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Main Highlight Card -->
+<div class="md:col-span-2 bg-primary-container/20 rounded-xl p-lg border border-primary-container flex flex-col md:flex-row gap-lg overflow-hidden relative">
+<div class="z-10 flex-1">
+<div class="bg-primary text-on-primary w-fit px-3 py-1 rounded-full text-label-sm mb-md uppercase tracking-wider">หนาแน่นสูง</div>
+<h3 class="text-headline-md font-headline-md text-on-primary-container mb-sm">โรงอาหารลานโพธิ์</h3>
+<p class="text-body-md text-on-surface-variant mb-lg">เป็นจุดที่มีสุนัขและแมวจรจัดอาศัยอยู่จำนวนมากในช่วงพักเที่ยง โปรดใช้ความระมัดระวังในการเดินผ่านและหลีกเลี่ยงการให้อาหารนอกจุดที่กำหนด</p>
+<div class="flex flex-wrap gap-sm mb-md">
+<span class="bg-surface-container-lowest px-3 py-1 rounded-full text-label-sm">สุนัข ~10 ตัว</span>
+<span class="bg-surface-container-lowest px-3 py-1 rounded-full text-label-sm">แมว ~5 ตัว</span>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm rounded-full font-bold text-label-md hover:scale-105 transition-transform">แสดงตำแหน่งบนแผนที่</button>
+</div>
+<div class="flex-1 min-h-[200px] rounded-xl overflow-hidden shadow-inner bg-surface">
+<div class="w-full h-full bg-cover bg-center" data-alt="A stylized 2D map view of a university campus plaza with icons representing dogs and cats. The map uses a soft pastel color palette with sage green for parks and light orange pins for animal locations. The style is clean, modern, and user-friendly, with subtle drop shadows on the icons to create depth." data-location="Bangkok" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDCp_m_TEYB_ZUAu9D8XpEHUU7xwXS5zDJw_BrP74BtdOZT2Ar_ulmFfI5QHlq3iQK12qIhIkunlUpmYekDBzKGXOG99y5IcpjD_NxaVUjH8uXFU5kuvHan_Ke5FTCWcHR4y3ukh2KG5LMKiIw11aBaGba7LJceyjNC9BT3fBF5rgU0QuHjSGGpEKJXUoEwcCRfwGG6L_qDJXl2YhI_f9G10QNpmNLoebd8yT7G6Z8eUvJ5HAnKy0qQHnfaIM0aRn7pC8SV6AOw71U')"></div>
+</div>
+</div>
+<!-- Sub Cards -->
+<div class="flex flex-col gap-gutter">
+<div class="bg-surface-container-high rounded-xl p-md border border-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-bold text-on-surface">อาคารเรียนรวม 1</h4>
+<span class="bg-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">ปานกลาง</span>
+</div>
+<p class="text-label-sm text-on-surface-variant">แมวแม่ลูกอ่อนมักอาศัยอยู่ใต้บันไดทางทิศใต้</p>
+</div>
+<div class="bg-surface-container-high rounded-xl p-md border border-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-sm">
+<h4 class="font-bold text-on-surface">ลานกิจกรรมอเนกประสงค์</h4>
+<span class="bg-surface-variant px-2 py-0.5 rounded text-[10px] font-bold">หนาแน่น</span>
+</div>
+<p class="text-label-sm text-on-surface-variant">สุนัขกลุ่มใหญ่ชอบมารวมตัวกันช่วงค่ำ</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Caution Zones -->
+<section class="mb-xl">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="text-headline-md font-headline-md text-error">พื้นที่ควรระวัง (Caution Zones)</h2>
+</div>
+<div class="space-y-md">
+<div class="bg-error-container/30 border-l-4 border-error p-md rounded-r-xl flex items-center gap-md">
+<div class="bg-error rounded-full p-2 hidden sm:block">
+<span class="material-symbols-outlined text-on-error">construction</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-on-error-container">เขตก่อสร้างหอพักใหม่</h3>
+<span class="text-error font-bold text-label-sm">อันตรายสูง</span>
+</div>
+<p class="text-label-md text-on-surface-variant leading-tight">พบสัตว์หลงเข้าไปในหลุมขุดเจาะ โปรดช่วยสอดส่องและแจ้งเจ้าหน้าที่หากพบเห็น</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">chevron_right</button>
+</div>
+<div class="bg-error-container/30 border-l-4 border-error p-md rounded-r-xl flex items-center gap-md">
+<div class="bg-error rounded-full p-2 hidden sm:block">
+<span class="material-symbols-outlined text-on-error">traffic</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<h3 class="font-bold text-on-error-container">ถนนเลี่ยงเมือง (ฝั่งประตู 4)</h3>
+<span class="text-error font-bold text-label-sm">ระวังรถเร็ว</span>
+</div>
+<p class="text-label-md text-on-surface-variant leading-tight">มักมีสัตว์ข้ามถนนช่วงกลางคืน โปรดใช้ความระมัดระวังในการขับขี่</p>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors">chevron_right</button>
+</div>
+</div>
+</section>
+<!-- Dynamic Interaction: Quick Report FAB (Contextual) -->
+<div class="fixed bottom-24 right-6 z-40 hidden md:block">
+<button class="bg-primary-container text-on-primary-container p-4 rounded-2xl shadow-lg hover:scale-110 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined">report_gmailerrorred</span>
+<span class="font-bold">รายงานเหตุฉุกเฉิน</span>
+</button>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full flex flex-col md:flex-row justify-between items-center px-lg py-md gap-md mt-auto bg-surface-container-lowest dark:bg-inverse-surface">
+<div class="text-headline-md font-headline-md font-bold text-primary">UniPets Locator</div>
+<p class="text-body-md text-on-surface-variant text-center md:text-left">© 2024 UniPets Locator. Caring for our campus neighbors.</p>
+<div class="flex gap-lg">
+<a class="text-on-surface-variant text-label-sm hover:text-primary underline decoration-2 transition-all" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant text-label-sm hover:text-primary underline decoration-2 transition-all" href="#">Contact Support</a>
+<a class="text-on-surface-variant text-label-sm hover:text-primary underline decoration-2 transition-all" href="#">Volunteer Portal</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-sm py-xs bg-surface-container dark:bg-surface-container-highest rounded-t-xl shadow-lg">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">map</span>
+<span class="text-label-sm font-label-sm">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 scale-90 transition-all duration-150">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-label-sm font-label-sm">Zones</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">pets</span>
+<span class="text-label-sm font-label-sm">Reports</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+
+
+</body></html>

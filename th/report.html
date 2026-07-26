@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>FindMyPet - แจ้งเบาะแส / เคสฉุกเฉิน</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<style>
+  body{background:#f3faff;font-family:Inter,sans-serif;color:#071e27}
+  .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
+  .form-input{border:1px solid #ddc0b8;border-radius:12px;padding:12px 16px;width:100%;font-size:16px;background:white}
+  .form-input:focus{outline:2px solid #9f4122;outline-offset:-1px}
+</style>
+</head>
+<body class="min-h-screen">
+<header class="sticky top-0 z-50 bg-[#f3faff]/80 backdrop-blur-md shadow-sm">
+<nav class="flex justify-between items-center w-full px-6 py-3 max-w-[1200px] mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#9f4122] text-3xl" style="font-variation-settings:'FILL'1">pets</span>
+<span class="font-bold text-[24px] font-['Plus_Jakarta_Sans'] text-[#9f4122]">FindMyPet</span>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<a href="../index.html" class="text-[#56423c] hover:text-[#9f4122]">ข่าวสาร</a>
+<a href="map.html" class="text-[#56423c] hover:text-[#9f4122]">แผนที่</a>
+<a href="zones.html" class="text-[#56423c] hover:text-[#9f4122]">โซนกิจกรรม</a>
+<a href="report.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">แจ้งเบาะแส</a>
+</div>
+<div class="flex items-center gap-3">
+<a href="../en/report.html" class="text-sm text-[#56423c] hover:text-[#9f4122]"><span class="material-symbols-outlined text-lg">language</span> EN</a>
+<span class="material-symbols-outlined text-[#56423c]">account_circle</span>
+</div>
+</nav>
+</header>
+<main class="py-8 px-6">
+<div class="max-w-3xl mx-auto">
+<div class="mb-8"><h1 class="text-[40px] font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]" style="letter-spacing:-0.02em">แจ้งเบาะแสสัตว์</h1><p class="text-[16px] text-[#56423c]">ช่วยเราติดตามและดูแลสัตว์ในมหาวิทยาลัย</p></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+<button class="bg-white p-6 rounded-2xl border-2 border-[#9f4122] shadow-sm hover:shadow-md transition-all text-center">
+<span class="material-symbols-outlined text-4xl text-[#9f4122]" style="font-variation-settings:'FILL'1">visibility</span>
+<h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold mt-2">แจ้งพบเห็น</h3>
+<p class="text-sm text-[#56423c]">เห็นสัตว์ในมหาวิทยาลัย? แจ้งให้เราทราบ!</p>
+</button>
+<button class="bg-white p-6 rounded-2xl border border-[#ba1a1a] shadow-sm hover:shadow-md transition-all text-center">
+<span class="material-symbols-outlined text-4xl text-[#ba1a1a]" style="font-variation-settings:'FILL'1">emergency</span>
+<h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold mt-2">เคสฉุกเฉิน</h3>
+<p class="text-sm text-[#56423c]">บาดเจ็บหรือตกอันตราย? แจ้งด่วน!</p>
+</button>
+</div>
+<div class="bg-white rounded-2xl p-8 shadow-sm border border-[#ddc0b8]/20">
+<h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold mb-6">รายละเอียดการแจ้ง</h2>
+<form class="space-y-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div><label class="block text-sm font-semibold mb-1">ประเภทสัตว์</label>
+<select class="form-input"><option>สุนัข</option><option>แมว</option><option>อื่นๆ</option></select></div>
+<div><label class="block text-sm font-semibold mb-1">สภาพ</label>
+<select class="form-input"><option>แข็งแรงดี</option><option>บาดเจ็บ</option><option>ป่วย</option><option>ฉุกเฉิน</option></select></div>
+</div>
+<div><label class="block text-sm font-semibold mb-1">สถานที่</label>
+<input class="form-input" placeholder="เช่น ใกล้ตึกวิทยาศาสตร์"/></div>
+<div><label class="block text-sm font-semibold mb-1">คำอธิบาย</label>
+<textarea class="form-input" rows="3" placeholder="อธิบายสิ่งที่คุณพบเห็น..."></textarea></div>
+<div><label class="block text-sm font-semibold mb-1">ช่องทางติดต่อ (ไม่บังคับ)</label>
+<input class="form-input" placeholder="เบอร์โทรหรืออีเมล"/></div>
+<button class="w-full bg-[#9f4122] text-white font-semibold py-3 rounded-xl hover:bg-opacity-90 transition-all flex items-center justify-center gap-2"><span class="material-symbols-outlined">send</span> ส่งรายงาน</button>
+</form>
+</div>
+</div>
+</main>
+<footer class="bg-[#c7dde9] py-4 px-6 flex flex-col md:flex-row justify-between items-center mt-8">
+<p class="text-xs text-[#56423c]">© 2025 FindMyPet</p>
+<div class="flex gap-6"><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">ติดต่อเรา</a><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">นโยบายความเป็นส่วนตัว</a></div>
+</footer>
+</body>
+</html>

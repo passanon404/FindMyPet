@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport">
+<title>FindMyPet - Campus Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+  body{font-family:Inter,sans-serif;background:#f3faff;color:#071e27}
+  .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
+  .pulse-marker{animation:pulse 2s infinite ease-in-out}
+  @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.4}100%{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+<header class="bg-[#f3faff] shadow-sm flex justify-between items-center px-6 py-3 w-full sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#9f4122] text-3xl" style="font-variation-settings:'FILL'1">pets</span>
+<h1 class="text-[24px] font-['Plus_Jakarta_Sans'] font-bold text-[#9f4122]">FindMyPet</h1>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a href="news.html" class="text-[#56423c] hover:text-[#9f4122]">News</a>
+<a href="map.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">Map</a>
+<a href="zones.html" class="text-[#56423c] hover:text-[#9f4122]">Zones</a>
+<a href="report.html" class="text-[#56423c] hover:text-[#9f4122]">Report</a>
+</nav>
+<div class="flex items-center gap-3">
+<a href="../th/map.html" class="text-sm text-[#56423c] hover:text-[#9f4122]"><span class="material-symbols-outlined text-lg">language</span> TH</a>
+<span class="material-symbols-outlined text-[#56423c]">account_circle</span>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<aside class="bg-[#e6f6ff] h-full w-80 flex flex-col p-4 gap-4 overflow-y-auto shadow-md shrink-0">
+<div class="mb-2"><h2 class="text-[24px] font-['Plus_Jakarta_Sans'] text-[#9f4122]">Nearby Activity</h2><p class="text-[16px] text-[#56423c]">Tracking 12 strays today</p></div>
+<div class="flex flex-col gap-4">
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
+<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#dbf1fe] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">pets</span></div>
+<div><h3 class="text-sm font-semibold">Kai Tom</h3><span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">Normal</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">schedule</span> Seen 10m ago</p></div></div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
+<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#fff8e1] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#795548]">pets</span></div>
+<div><h3 class="text-sm font-semibold">Kathi</h3><span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">Needs Help</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">location_on</span> Engineering Hall</p></div></div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
+<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#fff8e1] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#795548]">pets</span></div>
+<div><h3 class="text-sm font-semibold">Mok</h3><span class="bg-[#fff8e1] text-[#795548] px-2 py-0.5 rounded-full text-xs font-semibold">Sick</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">schedule</span> Reported 2h ago</p></div></div>
+</div>
+<div class="bg-white p-4 rounded-xl shadow-sm border border-[#ddc0b8]/30 cursor-pointer hover:shadow-md transition-all">
+<div class="flex gap-4"><div class="w-16 h-16 rounded-lg bg-[#dbf1fe] flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-3xl text-[#9f4122]" style="font-variation-settings:'FILL'1">pets</span></div>
+<div><h3 class="text-sm font-semibold">O-liang</h3><span class="bg-[#e8f5e9] text-[#2e7d32] px-2 py-0.5 rounded-full text-xs font-semibold">Normal</span><p class="text-[10px] text-[#56423c] mt-1"><span class="material-symbols-outlined text-[12px]">location_on</span> Main Library</p></div></div>
+</div>
+</div>
+<button class="mt-auto bg-[#ba1a1a] text-white w-full py-3 rounded-xl text-lg font-semibold flex items-center justify-center gap-3 hover:opacity-90 shadow-lg"><span class="material-symbols-outlined" style="font-variation-settings:'FILL'1">emergency</span> Emergency Report</button>
+</aside>
+<section class="flex-1 relative bg-[#dbf1fe] flex items-center justify-center">
+<div class="text-center"><span class="material-symbols-outlined text-8xl text-[#9f4122]/30" style="font-variation-settings:'FILL'1">map</span>
+<h3 class="text-xl font-['Plus_Jakarta_Sans'] font-bold text-[#56423c] mt-4">Interactive Campus Map</h3>
+<p class="text-[#89726b] mt-2">Map view showing pet locations and safe zones</p></div>
+<div class="absolute top-1/4 left-1/3 pulse-marker"><div class="w-16 h-16 bg-[#9f4122] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">pets</span></div></div>
+<div class="absolute top-1/2 left-2/3 pulse-marker" style="animation-delay:.5s"><div class="w-16 h-16 bg-[#ba1a1a] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">emergency</span></div></div>
+<div class="absolute bottom-[30%] left-[45%] pulse-marker" style="animation-delay:1.2s"><div class="w-16 h-16 bg-[#286b33] rounded-full border-4 border-white shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-white text-3xl" style="font-variation-settings:'FILL'1">pets</span></div></div>
+</section>
+</main>
+</body>
+</html>
