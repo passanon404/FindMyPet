@@ -318,7 +318,7 @@ document.getElementById('getLocationBtn').addEventListener('click', function() {
   );
 });
 
-// Form submission (multipart)
+// Form submission (JSON with base64 photo)
 document.getElementById('report-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
@@ -328,24 +328,6 @@ document.getElementById('report-form').addEventListener('submit', async (e) => {
   const animalTypeSelect = document.getElementById('animal-type');
   const animalType = animalTypeSelect.value === '__custom__' ? 'อื่นๆ' : animalTypeSelect.value;
   const animalTypeCustom = animalTypeSelect.value === '__custom__' ? document.getElementById('custom-type').value.trim() : null;
-
-  const formData = new FormData();
-  formData.append('animal_type', animalType);
-  if (animalTypeCustom) formData.append('animal_type_custom', animalTypeCustom);
-  formData.append('condition', selectedCondition);
-  formData.append('title', document.getElementById('title').value.trim());
-  formData.append('description', document.getElementById('description').value.trim());
-  formData.append('reporter_name', document.getElementById('reporter_name').value.trim());
-  formData.append('contact', document.getElementById('contact').value.trim());
-  formData.append('house_no', document.getElementById('house_no').value.trim());
-  formData.append('village_lane', document.getElementById('village_lane').value.trim());
-  formData.append('road', document.getElementById('road').value.trim());
-  formData.append('sub_district', document.getElementById('sub_district').value.trim());
-  formData.append('district', document.getElementById('district').value.trim());
-  formData.append('province', document.getElementById('province').value.trim());
-  formData.append('postal_code', document.getElementById('postal_code').value.trim());
-  formData.append('latitude', document.getElementById('latitude').value);
-  formData.append('longitude', document.getElementById('longitude').value);
 
   // สร้าง location จากที่อยู่
   const addrParts = [
@@ -357,15 +339,49 @@ document.getElementById('report-form').addEventListener('submit', async (e) => {
     document.getElementById('province').value.trim(),
     document.getElementById('postal_code').value.trim()
   ].filter(Boolean);
-  formData.append('location', addrParts.join(', ') || 'ไม่ระบุสถานที่');
 
+  // แปลงรูปเป็น base64 ก่อนส่ง
   const photoFile = document.getElementById('photo').files[0];
-  if (photoFile) formData.append('photo', photoFile);
+  let photoBase64 = null;
+  if (photoFile) {
+    try {
+      photoBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('อ่านไฟล์รูปไม่สำเร็จ'));
+        reader.readAsDataURL(photoFile);
+      });
+    } catch (photoErr) {
+      showToast('⚠️ ' + photoErr.message);
+    }
+  }
+
+  const payload = {
+    animal_type: animalType,
+    animal_type_custom: animalTypeCustom || null,
+    condition: selectedCondition,
+    title: document.getElementById('title').value.trim(),
+    description: document.getElementById('description').value.trim(),
+    reporter_name: document.getElementById('reporter_name').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    house_no: document.getElementById('house_no').value.trim(),
+    village_lane: document.getElementById('village_lane').value.trim(),
+    road: document.getElementById('road').value.trim(),
+    sub_district: document.getElementById('sub_district').value.trim(),
+    district: document.getElementById('district').value.trim(),
+    province: document.getElementById('province').value.trim(),
+    postal_code: document.getElementById('postal_code').value.trim(),
+    latitude: document.getElementById('latitude').value,
+    longitude: document.getElementById('longitude').value,
+    location: addrParts.join(', ') || 'ไม่ระบุสถานที่',
+    photo: photoBase64
+  };
 
   try {
     const res = await fetch(`${API_BASE}/reports`, {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
     if (!res.ok) {
       const err = await res.json();
