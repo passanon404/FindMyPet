@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="th">
 <head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport">
-<title>FindMyPet - แผนที่</title>
+<title>FindMyPet - แผนที่มหาวิทยาลัยพะเยา</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -10,6 +10,17 @@
   body{font-family:Inter,sans-serif;background:#f3faff;color:#071e27}
   .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
   #map{width:100%;height:calc(100vh - 80px);min-height:500px;border-radius:0}
+  .walking-person {
+    font-size: 24px;
+    text-align: center;
+    line-height: 36px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    animation: walkBounce 0.5s ease-in-out infinite alternate;
+  }
+  @keyframes walkBounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+  }
 </style>
 </head>
 <body class="flex flex-col h-screen overflow-hidden">
@@ -32,52 +43,73 @@
 <div id="map"></div>
 <!-- Floating info card -->
 <div class="absolute top-4 left-4 z-[1000] bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg max-w-xs border border-[#ddc0b8]/20">
-<h3 class="font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]">🗺️ แผนที่ FindMyPet</h3>
-<p class="text-xs text-[#56423c] mt-1">แสดงตำแหน่งสัตว์และจุดเฝ้าระวังในมหาวิทยาลัย</p>
-<div class="mt-2 flex gap-3 text-xs">
+<h3 class="font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]">🗺️ มหาวิทยาลัยพะเยา</h3>
+<p class="text-xs text-[#56423c] mt-1">แสดงตำแหน่งสัตว์ โซนเฝ้าระวัง และพื้นที่พบสัตว์บ่อย</p>
+<div class="mt-2 flex flex-col gap-1.5 text-xs">
+<span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#e53935] inline-block"></span> โซนพบสัตว์บ่อย (3+ ตัว)</span>
+<span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#fdd835] inline-block"></span> โซนพบสัตว์ปานกลาง (2-3 ตัว)</span>
 <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#9f4122] inline-block"></span> จุดพบสัตว์</span>
 <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#286b33] inline-block"></span> โซนปลอดภัย</span>
 <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#ba1a1a] inline-block"></span> จุดเสี่ยง</span>
+<span class="flex items-center gap-1"><span class="text-base">🚶</span> ลาดตระเวนอัตโนมัติ</span>
 </div>
 </div>
 </main>
-<footer class="bg-[#c7dde9] py-3 px-6 text-center text-xs text-[#56423c]">© 2025 FindMyPet — แผนที่ (OpenStreetMap / Leaflet)</footer>
+<footer class="bg-[#c7dde9] py-3 px-6 text-center text-xs text-[#56423c]">© 2025 FindMyPet — แผนที่มหาวิทยาลัยพะเยา (OpenStreetMap / Leaflet)</footer>
 
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const API_BASE = '/api';
 
-// พิกัดมหาวิทยาลัยพะเยา
-const UP_CENTER = [19.1698, 99.9025];
+// ========== พิกัดมหาวิทยาลัยพะเยา (จาก OSM) ==========
+const UP_CENTER = [19.029965, 99.893529];
+const UP_BOUNDS = [[19.021085, 99.880051], [19.038342, 99.906009]];
 
+// ========== จุดเฝ้าระวังตัวอย่างรอบมหาวิทยาลัย ==========
+const SPOTS = [
+  { lat: 19.0350, lng: 99.8980, label: 'ประตูทางเข้า 1 (ฝั่งทิศเหนือ)', type: 'watch' },
+  { lat: 19.0255, lng: 99.8960, label: 'ประตูทางเข้า 2 (ฝั่งทิศใต้)', type: 'watch' },
+  { lat: 19.0310, lng: 99.9010, label: 'ลานจอดรถคณะวิทย์', type: 'safe' },
+  { lat: 19.0285, lng: 99.8850, label: 'หอพักนักศึกษา', type: 'safe' },
+  { lat: 19.0335, lng: 99.8920, label: 'โรงอาหารกลาง', type: 'watch' },
+  { lat: 19.0270, lng: 99.8890, label: 'สนามกีฬา', type: 'safe' },
+  { lat: 19.0305, lng: 99.8830, label: 'คณะศิลปศาสตร์', type: 'safe' },
+  { lat: 19.0340, lng: 99.8955, label: 'ป้ายรถเมล์หน้ามหาวิทยาลัย', type: 'watch' },
+  { lat: 19.0260, lng: 99.8990, label: 'จุดทิ้งขยะหลังหอ', type: 'risk' },
+  { lat: 19.0325, lng: 99.8875, label: 'ซอยข้างคณะวิศวะ', type: 'risk' },
+];
+
+// ========== ตัวแปรส่วนกลาง ==========
+let map;
+let walkingMarkers = [];     // ตัวลาดตระเวน
+let walkingAngles = [];      // มุมปัจจุบันของแต่ละตัว
+let animFrameId = null;
+const ANIMATION_SPEED = 0.003; // radian per frame (~60fps → 1 รอบ ~ 3.5 นาที)
+
+// ========== เริ่มต้นแผนที่ ==========
 function initMap() {
-  const map = L.map('map').setView(UP_CENTER, 16);
+  map = L.map('map').setView(UP_CENTER, 16);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     maxZoom: 19
   }).addTo(map);
 
-  // วงกลมรัศมี 300m
-  L.circle(UP_CENTER, {
+  // แสดงขอบเขตมหาวิทยาลัย
+  L.rectangle(UP_BOUNDS, {
     color: '#9f4122',
-    fillColor: '#9f4122',
-    fillOpacity: 0.06,
-    radius: 300
+    weight: 2,
+    fill: false,
+    dashArray: '8, 8',
+    opacity: 0.5
   }).addTo(map);
 
-  // จุดเฝ้าระวังตัวอย่าง
-  const spots = [
-    { lat: 19.1710, lng: 99.9040, label: 'ประตูทางเข้า 1', type: 'watch' },
-    { lat: 19.1685, lng: 99.9015, label: 'ลานจอดรถหน้า ม.', type: 'safe' },
-    { lat: 19.1705, lng: 99.9005, label: 'จุดพักริมถนน', type: 'watch' },
-    { lat: 19.1678, lng: 99.9035, label: 'ร้านค้าชุมชน', type: 'safe' },
-    { lat: 19.1690, lng: 99.9060, label: 'ป้ายรถเมล์', type: 'watch' },
-  ];
-
-  spots.forEach(s => {
-    const color = s.type === 'safe' ? '#286b33' : '#9f4122';
+  // จุดเฝ้าระวัง
+  SPOTS.forEach(s => {
+    const colorMap = { safe: '#286b33', watch: '#9f4122', risk: '#ba1a1a' };
+    const labelMap = { safe: '✅ โซนปลอดภัย', watch: '👁️ จุดเฝ้าระวัง', risk: '⚠️ จุดเสี่ยง' };
+    const color = colorMap[s.type] || '#9f4122';
     const icon = L.divIcon({
       className: '',
       html: `<div style="width:16px;height:16px;border-radius:50%;background:${color};border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
@@ -85,16 +117,13 @@ function initMap() {
       iconAnchor: [8, 8]
     });
     const marker = L.marker([s.lat, s.lng], { icon }).addTo(map);
-    marker.bindPopup(`
-      <strong>${s.label}</strong><br>
-      <span style="color:#56423c;font-size:12px">${s.type === 'safe' ? '✅ โซนปลอดภัย' : '👁️ จุดเฝ้าระวัง'}</span>
-    `);
+    marker.bindPopup(`<strong>${s.label}</strong><br><span style="color:#56423c;font-size:12px">${labelMap[s.type] || ''}</span>`);
   });
 
-  // โหลด reports จาก API และวาง marker
-  loadReportMarkers(map);
+  // โหลด reports และสร้างโซน
+  loadDataAndInit(map);
 
-  // แสดงตำแหน่งปัจจุบัน
+  // ปุ่มหาตำแหน่งปัจจุบัน
   if (navigator.geolocation) {
     L.control.locate({
       position: 'topleft',
@@ -104,34 +133,198 @@ function initMap() {
   }
 }
 
-async function loadReportMarkers(map) {
+// ========== โหลดข้อมูลจาก API ==========
+async function loadDataAndInit(map) {
   try {
-    const res = await fetch(`${API_BASE}/reports?limit=100`);
+    const res = await fetch(`${API_BASE}/reports?limit=200`);
     const data = await res.json();
     const reports = data.reports || [];
 
-    reports.forEach(r => {
-      const lat = parseFloat(r.latitude);
-      const lng = parseFloat(r.longitude);
-      if (isNaN(lat) || isNaN(lng)) return;
+    // 1. วาง Marker จากรายงาน
+    placeReportMarkers(map, reports);
 
-      const isEmergency = r.condition === 'ฉุกเฉิน';
-      const color = isEmergency ? '#ba1a1a' : r.condition === 'ประชาสัมพันธ์' ? '#286b33' : '#006398';
-      const typeLabel = r.animal_type === 'อื่นๆ' && r.animal_type_custom ? r.animal_type_custom : r.animal_type;
+    // 2. วิเคราะห์ความหนาแน่นและสร้าง Heat Zone
+    const zones = analyzeDensity(reports);
+    createHeatZones(map, zones);
 
-      const marker = L.marker([lat, lng]).addTo(map);
-      marker.bindPopup(`
-        <b style="font-size:14px">${r.title || typeLabel}</b><br>
-        <span style="color:#56423c;font-size:12px">${r.condition}</span><br>
-        <a href="../index.html" style="color:#9f4122;font-weight:600;font-size:13px">ดูรายละเอียด →</a>
-      `);
-    });
+    // 3. เริ่มอนิเมชั่นคนเดิน
+    startWalkingAnimation(map, zones);
   } catch (e) {
     console.error('Failed to load reports:', e);
+    // Fallback: สร้างโซนจำลอง
+    const demoZones = generateDemoZones();
+    createHeatZones(map, demoZones);
+    startWalkingAnimation(map, demoZones);
   }
 }
 
+// ========== วาง Marker รายงาน ==========
+function placeReportMarkers(map, reports) {
+  reports.forEach(r => {
+    const lat = parseFloat(r.latitude);
+    const lng = parseFloat(r.longitude);
+    if (isNaN(lat) || isNaN(lng)) return;
+
+    const isEmergency = r.condition === 'ฉุกเฉิน';
+    const color = isEmergency ? '#ba1a1a' : r.condition === 'ประชาสัมพันธ์' ? '#286b33' : '#006398';
+    const typeLabel = r.animal_type === 'อื่นๆ' && r.animal_type_custom ? r.animal_type_custom : r.animal_type;
+
+    const marker = L.marker([lat, lng]).addTo(map);
+    marker.bindPopup(`
+      <b style="font-size:14px">${r.title || typeLabel}</b><br>
+      <span style="color:#56423c;font-size:12px">${r.condition}</span><br>
+      <a href="../index.html" style="color:#9f4122;font-weight:600;font-size:13px">ดูรายละเอียด →</a>
+    `);
+  });
+}
+
+// ========== วิเคราะห์ความหนาแน่นของรายงาน (cluster) ==========
+function analyzeDensity(reports) {
+  // กรองเฉพาะรายงานที่มีพิกัด
+  const withCoords = reports.filter(r => {
+    const lat = parseFloat(r.latitude);
+    const lng = parseFloat(r.longitude);
+    return !isNaN(lat) && !isNaN(lng);
+  });
+
+  if (withCoords.length === 0) return generateDemoZones();
+
+  // ใช้ grid-based clustering: แบ่งพื้นที่เป็นตาราง 0.003 องศา (~300m)
+  const gridSize = 0.003;
+  const clusters = {};
+
+  withCoords.forEach(r => {
+    const lat = parseFloat(r.latitude);
+    const lng = parseFloat(r.longitude);
+    const cellX = Math.floor(lat / gridSize);
+    const cellY = Math.floor(lng / gridSize);
+    const key = `${cellX}_${cellY}`;
+    if (!clusters[key]) {
+      clusters[key] = { count: 0, lats: [], lngs: [], centerLat: 0, centerLng: 0 };
+    }
+    clusters[key].count++;
+    clusters[key].lats.push(lat);
+    clusters[key].lngs.push(lng);
+  });
+
+  const zones = [];
+  for (const key in clusters) {
+    const c = clusters[key];
+    if (c.count < 2) continue; // ไม่สร้างโซนสำหรับ 1 รายการ
+    c.centerLat = c.lats.reduce((a, b) => a + b) / c.lats.length;
+    c.centerLng = c.lngs.reduce((a, b) => a + b) / c.lngs.length;
+    zones.push({
+      lat: c.centerLat,
+      lng: c.centerLng,
+      count: c.count,
+      // แดง = 3+ ตัว, เหลือง = 2-3 ตัว
+      level: c.count >= 3 ? 'high' : 'medium'
+    });
+  }
+
+  // ถ้าไม่มี zone ให้ใช้ demo
+  if (zones.length === 0) return generateDemoZones();
+  return zones;
+}
+
+// ========== โซนจำลองสำหรับตัวอย่าง (เมื่อไม่มีข้อมูลจริง) ==========
+function generateDemoZones() {
+  return [
+    { lat: 19.0315, lng: 99.8890, count: 5, level: 'high' },   // กลางมหาวิทยาลัย
+    { lat: 19.0345, lng: 99.8960, count: 4, level: 'high' },   // หน้าประตู
+    { lat: 19.0270, lng: 99.8855, count: 3, level: 'high' },   // หอพัก
+    { lat: 19.0280, lng: 99.8980, count: 2, level: 'medium' }, // ข้างถนน
+    { lat: 19.0330, lng: 99.8840, count: 2, level: 'medium' }, // คณะมนุษยศาสตร์
+    { lat: 19.0360, lng: 99.9010, count: 2, level: 'medium' }, // ปากทางเข้า
+  ];
+}
+
+// ========== สร้าง Heat Zone บนแผนที่ ==========
+function createHeatZones(map, zones) {
+  zones.forEach(z => {
+    const isHigh = z.level === 'high';
+    const radius = isHigh ? 100 : 70; // เมตร
+    const color = isHigh ? '#e53935' : '#fdd835';
+    const fillColor = isHigh ? '#e53935' : '#fdd835';
+    const fillOpacity = isHigh ? 0.25 : 0.18;
+
+    // วงกลมโซน
+    const circle = L.circle([z.lat, z.lng], {
+      color: color,
+      fillColor: fillColor,
+      fillOpacity: fillOpacity,
+      weight: isHigh ? 3 : 2,
+      opacity: 0.7,
+      radius: radius
+    }).addTo(map);
+
+    circle.bindPopup(`
+      <strong style="color:${color}">${isHigh ? '🔴 โซนพบสัตว์บ่อย' : '🟡 โซนพบสัตว์ปานกลาง'}</strong><br>
+      <span style="color:#56423c">จำนวนที่พบ: ${z.count} ตัว</span>
+    `);
+
+    // สำหรับโซน high ให้เก็บไว้ใช้กับ animation
+    if (isHigh) {
+      z._circle = circle;
+      z._radius = radius;
+    }
+  });
+}
+
+// ========== อนิเมชั่นคนเดินลาดตระเวน ==========
+function startWalkingAnimation(map, zones) {
+  const highZones = zones.filter(z => z.level === 'high');
+  if (highZones.length === 0) return;
+
+  // สร้างคนเดินสำหรับแต่ละโซนระดับสูง
+  highZones.forEach((z, idx) => {
+    const angle = (idx / highZones.length) * 2 * Math.PI;
+    walkingAngles[idx] = angle;
+
+    const icon = L.divIcon({
+      className: '',
+      html: '<div class="walking-person">🚶</div>',
+      iconSize: [36, 36],
+      iconAnchor: [18, 18]
+    });
+
+    const initialPos = getCirclePoint(z.lat, z.lng, z._radius || 100, angle);
+    const marker = L.marker(initialPos, { icon }).addTo(map);
+    walkingMarkers[idx] = { marker, zone: z };
+  });
+
+  // เริ่ม loop อนิเมชั่น
+  function animate() {
+    walkingMarkers.forEach((wm, idx) => {
+      if (!wm) return;
+      walkingAngles[idx] = (walkingAngles[idx] || 0) + ANIMATION_SPEED;
+      const angle = walkingAngles[idx];
+      const z = wm.zone;
+      const pos = getCirclePoint(z.lat, z.lng, z._radius || 100, angle);
+      wm.marker.setLatLng(pos);
+    });
+    animFrameId = requestAnimationFrame(animate);
+  }
+  animate();
+}
+
+// ========== หาจุดบนวงกลม ==========
+function getCirclePoint(centerLat, centerLng, radiusMeters, angleRad) {
+  // approximate: 1 องศาละติจูด ≈ 111320m, 1 องศาลองจิจูด ≈ cos(lat)*111320m
+  const latPerM = 1 / 111320;
+  const lngPerM = 1 / (111320 * Math.cos(centerLat * Math.PI / 180));
+  const dx = radiusMeters * Math.cos(angleRad);
+  const dy = radiusMeters * Math.sin(angleRad);
+  return [centerLat + dy * latPerM, centerLng + dx * lngPerM];
+}
+
+// ========== เริ่ม ==========
 document.addEventListener('DOMContentLoaded', initMap);
+
+// หยุดอนิเมชั่นเมื่อออกจากหน้า
+window.addEventListener('beforeunload', () => {
+  if (animFrameId) cancelAnimationFrame(animFrameId);
+});
 </script>
 <!-- Leaflet Locate plugin -->
 <script src="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
