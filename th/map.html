@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="th">
 <head><meta charset="utf-8"><meta content="width=device-width,initial-scale=1" name="viewport">
-<title>FindMyPet - แผนที่มหาวิทยาลัยพะเยา</title>
+<title>FindMyPet - แผนที่</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   body{font-family:Inter,sans-serif;background:#f3faff;color:#071e27}
   .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
@@ -20,7 +21,6 @@
 <nav class="hidden md:flex items-center gap-6">
 <a href="../index.html" class="text-[#56423c] hover:text-[#9f4122]">ข่าวสาร</a>
 <a href="map.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">แผนที่</a>
-<a href="zones.html" class="text-[#56423c] hover:text-[#9f4122]">โซนกิจกรรม</a>
 <a href="report.html" class="text-[#56423c] hover:text-[#9f4122]">แจ้งเบาะแส</a>
 </div>
 <div class="flex items-center gap-3">
@@ -31,51 +31,41 @@
 <main class="flex-1 relative">
 <div id="map"></div>
 <!-- Floating info card -->
-<div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg max-w-xs border border-[#ddc0b8]/20">
-<h3 class="font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]">📍 บริเวณหน้ามหาวิทยาลัยพะเยา</h3>
-<p class="text-xs text-[#56423c] mt-1">พื้นที่จุดเฝ้าระวังสัตว์บริเวณประตูทางเข้ามหาวิทยาลัยและบริเวณโดยรอบ</p>
-<div class="mt-2 flex gap-2 text-xs">
+<div class="absolute top-4 left-4 z-[1000] bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-lg max-w-xs border border-[#ddc0b8]/20">
+<h3 class="font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]">🗺️ แผนที่ FindMyPet</h3>
+<p class="text-xs text-[#56423c] mt-1">แสดงตำแหน่งสัตว์และจุดเฝ้าระวังในมหาวิทยาลัย</p>
+<div class="mt-2 flex gap-3 text-xs">
 <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#9f4122] inline-block"></span> จุดพบสัตว์</span>
 <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#286b33] inline-block"></span> โซนปลอดภัย</span>
+<span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-[#ba1a1a] inline-block"></span> จุดเสี่ยง</span>
 </div>
 </div>
 </main>
-<footer class="bg-[#c7dde9] py-3 px-6 text-center text-xs text-[#56423c]">© 2025 FindMyPet — แผนที่แสดงพื้นที่หน้ามหาวิทยาลัยพะเยา</footer>
+<footer class="bg-[#c7dde9] py-3 px-6 text-center text-xs text-[#56423c]">© 2025 FindMyPet — แผนที่ (OpenStreetMap / Leaflet)</footer>
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-// กำหนดพิกัดมหาวิทยาลัยพะเยา
-const UP_CENTER = { lat: 19.1698, lng: 99.9025 };
+const API_BASE = '/api';
+
+// พิกัดมหาวิทยาลัยพะเยา
+const UP_CENTER = [19.1698, 99.9025];
 
 function initMap() {
-  const map = new google.maps.Map(document.getElementById('map'), {
-    center: UP_CENTER,
-    zoom: 16,
-    mapTypeId: 'roadmap',
-    mapTypeControl: true,
-    fullscreenControl: true,
-    streetViewControl: true,
-    zoomControl: true,
-    styles: [
-      { featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'on' }] },
-      { featureType: 'transit', elementType: 'all', stylers: [{ visibility: 'simplified' }] }
-    ]
-  });
+  const map = L.map('map').setView(UP_CENTER, 16);
 
-  // Marker หลัก - หน้ามอ
-  new google.maps.Marker({
-    position: UP_CENTER,
-    map,
-    title: 'หน้ามหาวิทยาลัยพะเยา',
-    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 12,
-      fillColor: '#9f4122',
-      fillOpacity: 1,
-      strokeColor: '#ffffff',
-      strokeWeight: 3,
-    },
-    animation: google.maps.Animation.DROP,
-  });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 19
+  }).addTo(map);
+
+  // วงกลมรัศมี 300m
+  L.circle(UP_CENTER, {
+    color: '#9f4122',
+    fillColor: '#9f4122',
+    fillOpacity: 0.06,
+    radius: 300
+  }).addTo(map);
 
   // จุดเฝ้าระวังตัวอย่าง
   const spots = [
@@ -88,43 +78,63 @@ function initMap() {
 
   spots.forEach(s => {
     const color = s.type === 'safe' ? '#286b33' : '#9f4122';
-    const marker = new google.maps.Marker({
-      position: { lat: s.lat, lng: s.lng },
-      map,
-      title: s.label,
-      icon: {
-        path: google.maps.SymbolPath.CIRCLE,
-        scale: 8,
-        fillColor: color,
-        fillOpacity: 0.9,
-        strokeColor: '#ffffff',
-        strokeWeight: 2,
-      },
+    const icon = L.divIcon({
+      className: '',
+      html: `<div style="width:16px;height:16px;border-radius:50%;background:${color};border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
     });
-
-    const infoWindow = new google.maps.InfoWindow({
-      content: `<div style="font-family:Inter,sans-serif;padding:4px">
-        <strong style="color:#071e27">${s.label}</strong>
-        <p style="color:#56423c;font-size:12px;margin:2px 0 0">${s.type === 'safe' ? '✅ โซนปลอดภัย' : '👁️ จุดเฝ้าระวัง'}</p>
-      </div>`
-    });
-
-    marker.addListener('click', () => infoWindow.open(map, marker));
+    const marker = L.marker([s.lat, s.lng], { icon }).addTo(map);
+    marker.bindPopup(`
+      <strong>${s.label}</strong><br>
+      <span style="color:#56423c;font-size:12px">${s.type === 'safe' ? '✅ โซนปลอดภัย' : '👁️ จุดเฝ้าระวัง'}</span>
+    `);
   });
 
-  // วงกลมรัศมีรอบหน้ามอ
-  new google.maps.Circle({
-    strokeColor: '#9f4122',
-    strokeOpacity: 0.2,
-    strokeWeight: 1,
-    fillColor: '#9f4122',
-    fillOpacity: 0.08,
-    map,
-    center: UP_CENTER,
-    radius: 300,
-  });
+  // โหลด reports จาก API และวาง marker
+  loadReportMarkers(map);
+
+  // แสดงตำแหน่งปัจจุบัน
+  if (navigator.geolocation) {
+    L.control.locate({
+      position: 'topleft',
+      strings: { title: 'แสดงตำแหน่งปัจจุบัน' },
+      locateOptions: { enableHighAccuracy: true }
+    }).addTo(map);
+  }
 }
+
+async function loadReportMarkers(map) {
+  try {
+    const res = await fetch(`${API_BASE}/reports?limit=100`);
+    const data = await res.json();
+    const reports = data.reports || [];
+
+    reports.forEach(r => {
+      const lat = parseFloat(r.latitude);
+      const lng = parseFloat(r.longitude);
+      if (isNaN(lat) || isNaN(lng)) return;
+
+      const isEmergency = r.condition === 'ฉุกเฉิน';
+      const color = isEmergency ? '#ba1a1a' : r.condition === 'ประชาสัมพันธ์' ? '#286b33' : '#006398';
+      const typeLabel = r.animal_type === 'อื่นๆ' && r.animal_type_custom ? r.animal_type_custom : r.animal_type;
+
+      const marker = L.marker([lat, lng]).addTo(map);
+      marker.bindPopup(`
+        <b style="font-size:14px">${r.title || typeLabel}</b><br>
+        <span style="color:#56423c;font-size:12px">${r.condition}</span><br>
+        <a href="../index.html" style="color:#9f4122;font-weight:600;font-size:13px">ดูรายละเอียด →</a>
+      `);
+    });
+  } catch (e) {
+    console.error('Failed to load reports:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initMap);
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap" async defer></script>
+<!-- Leaflet Locate plugin -->
+<script src="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.css" />
 </body>
 </html>

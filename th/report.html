@@ -5,6 +5,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   body{background:#f3faff;font-family:Inter,sans-serif;color:#071e27}
   .material-symbols-outlined{font-variation-settings:'FILL'0,'wght'400,'GRAD'0,'opsz'24}
@@ -13,6 +14,9 @@
   select.form-input{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2356423c' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:20px}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#071e27;color:white;padding:12px 24px;border-radius:12px;z-index:100;opacity:0;transition:opacity .3s;pointer-events:none}
   .toast.show{opacity:1}
+  #reportPickerMap{height:300px;border-radius:12px;z-index:1}
+  .photo-preview{max-width:250px;max-height:250px;border-radius:8px;margin-top:8px;display:none}
+  .photo-preview.show{display:block}
 </style>
 </head>
 <body class="min-h-screen">
@@ -25,7 +29,6 @@
 <div class="hidden md:flex items-center gap-6">
 <a href="../index.html" class="text-[#56423c] hover:text-[#9f4122]">ข่าวสาร</a>
 <a href="map.html" class="text-[#56423c] hover:text-[#9f4122]">แผนที่</a>
-<a href="zones.html" class="text-[#56423c] hover:text-[#9f4122]">โซนกิจกรรม</a>
 <a href="report.html" class="text-[#9f4122] font-bold border-b-2 border-[#9f4122] pb-1">แจ้งเบาะแส</a>
 </div>
 <div class="flex items-center gap-3">
@@ -39,7 +42,7 @@
 <div class="mb-8"><h1 class="text-[40px] font-['Plus_Jakarta_Sans'] font-bold text-[#071e27]" style="letter-spacing:-0.02em">แจ้งเบาะแสสัตว์</h1><p class="text-[16px] text-[#56423c]">ช่วยเราติดตามและดูแลสัตว์ในมหาวิทยาลัย</p></div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" id="report-type-selector">
-<button class="report-type-btn bg-white p-6 rounded-2xl border-2 border-[#9f4122] shadow-sm hover:shadow-md transition-all text-center" data-condition="แจ้งพบเห็น">
+<button class="report-type-btn bg-white p-6 rounded-2xl border-2 border-[#9f4122] shadow-sm hover:shadow-md transition-all text-center" data-condition="พบเห็น">
 <span class="material-symbols-outlined text-4xl text-[#9f4122]" style="font-variation-settings:'FILL'1">visibility</span>
 <h3 class="text-lg font-['Plus_Jakarta_Sans'] font-bold mt-2">แจ้งพบเห็น</h3>
 <p class="text-sm text-[#56423c]">เห็นสัตว์ในมหาวิทยาลัย? แจ้งให้เราทราบ!</p>
@@ -53,50 +56,125 @@
 
 <div id="form-section" class="hidden bg-white rounded-2xl p-8 shadow-sm border border-[#ddc0b8]/20">
 <h2 class="text-[24px] font-['Plus_Jakarta_Sans'] font-semibold mb-6" id="form-title">รายละเอียด</h2>
-<form id="report-form" class="space-y-4">
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div>
-<label class="block text-sm font-semibold mb-1">ประเภทสัตว์ <span class="text-red-500">*</span></label>
-<select id="animal-type" class="form-input" required>
-<option value="">— เลือกประเภทสัตว์ —</option>
-</select>
-</div>
-<div id="custom-type-wrapper" class="hidden">
-<label class="block text-sm font-semibold mb-1">ระบุประเภทสัตว์</label>
-<input id="custom-type" class="form-input" placeholder="พิมพ์ประเภทสัตว์"/>
-</div>
-<div>
-<label class="block text-sm font-semibold mb-1">สภาพ <span class="text-red-500">*</span></label>
-<select id="condition" class="form-input" required>
-<option value="แข็งแรงดี">แข็งแรงดี</option>
-<option value="บาดเจ็บ">บาดเจ็บ</option>
-<option value="ป่วย">ป่วย</option>
-<option value="ฉุกเฉิน">ฉุกเฉิน</option>
-</select>
-</div>
-</div>
-<div>
-<label class="block text-sm font-semibold mb-1">สถานที่ <span class="text-red-500">*</span></label>
-<input id="location" class="form-input" placeholder="เช่น ใกล้ตึกวิทยาศาสตร์" required/>
-</div>
-<div>
-<label class="block text-sm font-semibold mb-1">คำอธิบาย</label>
-<textarea id="description" class="form-input" rows="3" placeholder="อธิบายสิ่งที่คุณพบเห็น..."></textarea>
-</div>
-<div>
-<label class="block text-sm font-semibold mb-1">ช่องทางติดต่อ (ไม่บังคับ)</label>
-<input id="contact" class="form-input" placeholder="เบอร์โทรศัพท์"/>
-</div>
-<button type="submit" id="submit-btn" class="w-full bg-[#9f4122] text-white font-semibold py-3 rounded-xl hover:bg-opacity-90 transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">send</span> ส่งรายงาน
-</button>
+<form id="report-form" class="space-y-4" enctype="multipart/form-data">
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-semibold mb-1">ประเภทสัตว์ <span class="text-red-500">*</span></label>
+      <select id="animal-type" class="form-input" required>
+        <option value="">— เลือกประเภทสัตว์ —</option>
+      </select>
+    </div>
+    <div id="custom-type-wrapper" class="hidden">
+      <label class="block text-sm font-semibold mb-1">ระบุประเภทสัตว์</label>
+      <input id="custom-type" class="form-input" placeholder="พิมพ์ประเภทสัตว์"/>
+    </div>
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold mb-1">หัวข้อ <span class="text-red-500">*</span></label>
+    <input id="title" class="form-input" placeholder="เช่น พบสุนัขจรจัดบริเวณปากซอย" required/>
+  </div>
+
+  <div>
+    <label class="block text-sm font-semibold mb-1">รายละเอียด</label>
+    <textarea id="description" class="form-input" rows="3" placeholder="อธิบายสิ่งที่คุณพบเห็น..."></textarea>
+  </div>
+
+  <!-- 📷 Photo Upload -->
+  <div>
+    <label class="block text-sm font-semibold mb-1">📷 รูปสัตว์ที่ถ่ายมา</label>
+    <input id="photo" type="file" accept="image/*" class="form-input file:border-0 file:bg-[#9f4122] file:text-white file:py-2 file:px-4 file:rounded-lg file:cursor-pointer file:mr-3"/>
+    <small class="text-xs text-[#89726b]">เลือกไฟล์รูปภาพ (สูงสุด 5MB, .jpg .png .gif .webp)</small>
+    <img id="photoPreview" class="photo-preview"/>
+  </div>
+
+  <!-- 👤 Reporter -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-semibold mb-1">ชื่อผู้แจ้ง</label>
+      <input id="reporter_name" class="form-input" placeholder="ชื่อ-นามสกุล"/>
+    </div>
+    <div>
+      <label class="block text-sm font-semibold mb-1">ช่องทางติดต่อ</label>
+      <input id="contact" class="form-input" placeholder="เบอร์โทรศัพท์"/>
+    </div>
+  </div>
+
+  <!-- 📍 Address -->
+  <fieldset class="border-2 border-[#ddc0b8]/30 rounded-2xl p-5 space-y-4">
+    <legend class="font-['Plus_Jakarta_Sans'] font-bold text-[#9f4122] px-2">📍 ที่อยู่ (สถานที่เกิดเหตุ)</legend>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">บ้านเลขที่</label>
+        <input id="house_no" class="form-input" placeholder="เช่น 125/2"/>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">หมู่ / ซอย</label>
+        <input id="village_lane" class="form-input" placeholder="เช่น ซอยสุขใจ 5"/>
+      </div>
+    </div>
+
+    <div>
+      <label class="block text-sm font-semibold mb-1">ถนน</label>
+      <input id="road" class="form-input" placeholder="เช่น ถนนเพชรเกษม"/>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">ตำบล / แขวง *</label>
+        <input id="sub_district" class="form-input" placeholder="เช่น แขวงบางแค" required/>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">อำเภอ / เขต *</label>
+        <input id="district" class="form-input" placeholder="เช่น เขตบางแค" required/>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">จังหวัด *</label>
+        <input id="province" class="form-input" placeholder="เช่น กรุงเทพมหานคร" required/>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">รหัสไปรษณีย์</label>
+        <input id="postal_code" class="form-input" placeholder="เช่น 10160"/>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- 🗺️ Map Picker -->
+  <fieldset class="border-2 border-[#ddc0b8]/30 rounded-2xl p-5 space-y-3">
+    <legend class="font-['Plus_Jakarta_Sans'] font-bold text-[#9f4122] px-2">🗺️ พิกัดแผนที่</legend>
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold mb-1">ละติจูด</label>
+        <input id="latitude" class="form-input font-mono text-sm" readonly placeholder="คลิกบนแผนที่"/>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold mb-1">ลองจิจูด</label>
+        <input id="longitude" class="form-input font-mono text-sm" readonly placeholder="คลิกบนแผนที่"/>
+      </div>
+    </div>
+    <div id="reportPickerMap"></div>
+    <small class="text-xs text-[#89726b]">คลิกบนแผนที่เพื่อเลือกพิกัด หรือกดปุ่มด้านล่าง</small>
+    <button type="button" id="getLocationBtn" class="bg-[#dbf1fe] text-[#071e27] text-sm font-semibold py-2 px-4 rounded-lg hover:bg-[#cfe6f2] flex items-center gap-2">
+      <span class="material-symbols-outlined text-[18px]">my_location</span> ใช้ตำแหน่งปัจจุบัน
+    </button>
+  </fieldset>
+
+  <button type="submit" id="submit-btn" class="w-full bg-[#9f4122] text-white font-semibold py-3 rounded-xl hover:bg-opacity-90 transition-all flex items-center justify-center gap-2 text-[18px]">
+    <span class="material-symbols-outlined">send</span> ส่งรายงาน
+  </button>
 </form>
+
 <div id="success-message" class="hidden text-center py-8">
-<span class="material-symbols-outlined text-6xl text-[#286b33]" style="font-variation-settings:'FILL'1">check_circle</span>
-<h3 class="text-2xl font-['Plus_Jakarta_Sans'] font-bold mt-2">ส่งรายงานสำเร็จ!</h3>
-<p class="text-[#56423c] mt-1">รายงานของคุณถูกบันทึกและแสดงในหน้าข่าวสารแล้ว</p>
-<a href="../index.html" class="inline-block mt-4 bg-[#9f4122] text-white px-6 py-2 rounded-lg hover:bg-opacity-90">ดูหน้าข่าวสาร</a>
-<button onclick="resetForm()" class="inline-block mt-2 ml-2 bg-[#dbf1fe] text-[#071e27] px-6 py-2 rounded-lg hover:bg-[#cfe6f2]">แจ้งอีกครั้ง</button>
+  <span class="material-symbols-outlined text-6xl text-[#286b33]" style="font-variation-settings:'FILL'1">check_circle</span>
+  <h3 class="text-2xl font-['Plus_Jakarta_Sans'] font-bold mt-2">ส่งรายงานสำเร็จ!</h3>
+  <p class="text-[#56423c] mt-1">รายงานของคุณถูกบันทึกและแสดงในหน้าข่าวสารแล้ว</p>
+  <a href="../index.html" class="inline-block mt-4 bg-[#9f4122] text-white px-6 py-2 rounded-lg hover:bg-opacity-90">ดูหน้าข่าวสาร</a>
+  <button onclick="resetForm()" class="inline-block mt-2 ml-2 bg-[#dbf1fe] text-[#071e27] px-6 py-2 rounded-lg hover:bg-[#cfe6f2]">แจ้งอีกครั้ง</button>
 </div>
 </div>
 </div>
@@ -107,9 +185,13 @@
 <div class="flex gap-6"><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">ติดต่อเรา</a><a href="#" class="text-xs text-[#56423c] hover:text-[#9f4122]">นโยบายความเป็นส่วนตัว</a></div>
 </footer>
 
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const API_BASE = '/api';
 let selectedCondition = '';
+let reportMap = null;
+let reportMarker = null;
 
 function showToast(msg) {
   const t = document.getElementById('toast');
@@ -130,7 +212,6 @@ async function loadTypes() {
       opt.textContent = t.name;
       select.appendChild(opt);
     });
-    // Add custom option
     const customOpt = document.createElement('option');
     customOpt.value = '__custom__';
     customOpt.textContent = 'อื่นๆ (พิมพ์เอง)';
@@ -145,11 +226,11 @@ document.querySelectorAll('.report-type-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.report-type-btn').forEach(b => {
       b.style.borderColor = '#ddc0b8';
+      b.style.borderWidth = '1px';
     });
     btn.style.borderColor = btn.dataset.condition === 'ฉุกเฉิน' ? '#ba1a1a' : '#9f4122';
     btn.style.borderWidth = '2px';
     selectedCondition = btn.dataset.condition;
-    document.getElementById('condition').value = selectedCondition === 'ฉุกเฉิน' ? 'ฉุกเฉิน' : 'แข็งแรงดี';
     document.getElementById('form-section').classList.remove('hidden');
     document.getElementById('form-title').textContent = selectedCondition === 'ฉุกเฉิน' ? 'รายละเอียดเคสฉุกเฉิน' : 'รายละเอียดการแจ้ง';
     document.getElementById('form-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -166,7 +247,78 @@ document.getElementById('animal-type').addEventListener('change', function() {
   }
 });
 
-// Form submission
+// Photo preview
+document.getElementById('photo').addEventListener('change', function(e) {
+  const preview = document.getElementById('photoPreview');
+  const file = e.target.files[0];
+  if (!file) { preview.classList.remove('show'); return; }
+  const reader = new FileReader();
+  reader.onload = ev => { preview.src = ev.target.result; preview.classList.add('show'); };
+  reader.readAsDataURL(file);
+});
+
+// Map picker
+function initPickerMap() {
+  const el = document.getElementById('reportPickerMap');
+  if (!el) return;
+  const defaultPos = [19.17, 99.90];
+  reportMap = L.map('reportPickerMap').setView(defaultPos, 14);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap', maxZoom: 19
+  }).addTo(reportMap);
+
+  reportMarker = L.marker(defaultPos, { draggable: true }).addTo(reportMap);
+  document.getElementById('latitude').value = defaultPos[0].toFixed(6);
+  document.getElementById('longitude').value = defaultPos[1].toFixed(6);
+
+  reportMarker.on('dragend', () => {
+    const p = reportMarker.getLatLng();
+    document.getElementById('latitude').value = p.lat.toFixed(6);
+    document.getElementById('longitude').value = p.lng.toFixed(6);
+  });
+
+  reportMap.on('click', e => {
+    reportMarker.setLatLng(e.latlng);
+    document.getElementById('latitude').value = e.latlng.lat.toFixed(6);
+    document.getElementById('longitude').value = e.latlng.lng.toFixed(6);
+  });
+}
+
+// Get current location
+document.getElementById('getLocationBtn').addEventListener('click', function() {
+  if (!navigator.geolocation) { alert('เบราว์เซอร์ไม่รองรับการระบุตำแหน่ง'); return; }
+  this.disabled = true; this.innerHTML = '<span class="material-symbols-outlined text-[18px] animate-spin">refresh</span> กำลังหา...';
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const { latitude, longitude } = pos.coords;
+      document.getElementById('latitude').value = latitude.toFixed(6);
+      document.getElementById('longitude').value = longitude.toFixed(6);
+      if (reportMarker && reportMap) {
+        reportMarker.setLatLng([latitude, longitude]);
+        reportMap.setView([latitude, longitude], 16);
+      }
+      // Reverse geocode
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json&accept-language=th`)
+        .then(r => r.json()).then(data => {
+          const a = data.address || {};
+          if (a.village && !document.getElementById('village_lane').value) document.getElementById('village_lane').value = a.village;
+          if (a.road && !document.getElementById('road').value) document.getElementById('road').value = a.road;
+          if (a.suburb && !document.getElementById('sub_district').value) document.getElementById('sub_district').value = a.suburb;
+          if (a.city_district && !document.getElementById('district').value) document.getElementById('district').value = a.city_district;
+          if (a.city && !document.getElementById('province').value) document.getElementById('province').value = a.city;
+          if (a.postcode && !document.getElementById('postal_code').value) document.getElementById('postal_code').value = a.postcode;
+        }).catch(() => {});
+      this.disabled = false; this.innerHTML = '<span class="material-symbols-outlined text-[18px]">my_location</span> ใช้ตำแหน่งปัจจุบัน';
+    },
+    err => {
+      alert('⚠️ ไม่สามารถระบุตำแหน่ง: ' + err.message);
+      this.disabled = false; this.innerHTML = '<span class="material-symbols-outlined text-[18px]">my_location</span> ใช้ตำแหน่งปัจจุบัน';
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+});
+
+// Form submission (multipart)
 document.getElementById('report-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
@@ -177,21 +329,31 @@ document.getElementById('report-form').addEventListener('submit', async (e) => {
   const animalType = animalTypeSelect.value === '__custom__' ? 'อื่นๆ' : animalTypeSelect.value;
   const animalTypeCustom = animalTypeSelect.value === '__custom__' ? document.getElementById('custom-type').value.trim() : null;
 
-  const payload = {
-    animal_type: animalType,
-    animal_type_custom: animalTypeCustom,
-    condition: document.getElementById('condition').value,
-    location: document.getElementById('location').value.trim(),
-    description: document.getElementById('description').value.trim(),
-    contact: document.getElementById('contact').value.trim(),
-    reporter_name: ''
-  };
+  const formData = new FormData();
+  formData.append('animal_type', animalType);
+  if (animalTypeCustom) formData.append('animal_type_custom', animalTypeCustom);
+  formData.append('condition', selectedCondition);
+  formData.append('title', document.getElementById('title').value.trim());
+  formData.append('description', document.getElementById('description').value.trim());
+  formData.append('reporter_name', document.getElementById('reporter_name').value.trim());
+  formData.append('contact', document.getElementById('contact').value.trim());
+  formData.append('house_no', document.getElementById('house_no').value.trim());
+  formData.append('village_lane', document.getElementById('village_lane').value.trim());
+  formData.append('road', document.getElementById('road').value.trim());
+  formData.append('sub_district', document.getElementById('sub_district').value.trim());
+  formData.append('district', document.getElementById('district').value.trim());
+  formData.append('province', document.getElementById('province').value.trim());
+  formData.append('postal_code', document.getElementById('postal_code').value.trim());
+  formData.append('latitude', document.getElementById('latitude').value);
+  formData.append('longitude', document.getElementById('longitude').value);
+
+  const photoFile = document.getElementById('photo').files[0];
+  if (photoFile) formData.append('photo', photoFile);
 
   try {
     const res = await fetch(`${API_BASE}/reports`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: formData
     });
     if (!res.ok) {
       const err = await res.json();
@@ -211,13 +373,19 @@ function resetForm() {
   document.getElementById('success-message').classList.add('hidden');
   document.getElementById('report-form').reset();
   document.getElementById('custom-type-wrapper').classList.add('hidden');
+  document.getElementById('photoPreview').classList.remove('show');
   document.getElementById('submit-btn').disabled = false;
   document.getElementById('submit-btn').innerHTML = '<span class="material-symbols-outlined">send</span> ส่งรายงาน';
   selectedCondition = '';
-  document.querySelectorAll('.report-type-btn').forEach(b => b.style.borderColor = '#ddc0b8');
+  document.querySelectorAll('.report-type-btn').forEach(b => {
+    b.style.borderColor = '#ddc0b8'; b.style.borderWidth = '1px';
+  });
 }
 
-document.addEventListener('DOMContentLoaded', loadTypes);
+document.addEventListener('DOMContentLoaded', () => {
+  loadTypes();
+  initPickerMap();
+});
 </script>
 </body>
 </html>
