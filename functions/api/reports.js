@@ -1,4 +1,4 @@
-import { json, error } from '../../_utils';
+import { json, error } from '../_utils';
 
 /**
  * GET /api/reports — List reports ordered by newest first
