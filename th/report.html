@@ -261,8 +261,8 @@ document.getElementById('photo').addEventListener('change', function(e) {
 function initPickerMap() {
   const el = document.getElementById('reportPickerMap');
   if (!el) return;
-  const defaultPos = [19.17, 99.90];
-  reportMap = L.map('reportPickerMap').setView(defaultPos, 14);
+  const defaultPos = [19.029965, 99.893529];
+  reportMap = L.map('reportPickerMap').setView(defaultPos, 15);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap', maxZoom: 19
   }).addTo(reportMap);
