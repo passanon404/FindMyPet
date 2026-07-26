@@ -1,0 +1,6 @@
+.wrangler/
+templates/
+test.txt
+PAGES.md
+*.zip
+.git-credentials
