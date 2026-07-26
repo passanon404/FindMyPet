@@ -96,9 +96,10 @@ export async function onRequest(context) {
       }
 
       // ถ้าไม่มี location ให้สร้างจากที่อยู่
-      if (!location || !location.trim()) {
+      let finalLocation = location;
+      if (!finalLocation || !finalLocation.trim()) {
         const addrParts = [house_no, village_lane, road, sub_district, district, province, postal_code].filter(Boolean);
-        location = addrParts.length > 0 ? addrParts.join(', ') : 'ไม่ระบุสถานที่';
+        finalLocation = addrParts.length > 0 ? addrParts.join(', ') : 'ไม่ระบุสถานที่';
       }
 
       const { results } = await env.findmypet_db.prepare(
@@ -112,7 +113,7 @@ export async function onRequest(context) {
         animal_type_custom || null,
         condition,
         title || null,
-        location || null,
+        finalLocation,
         description || null,
         contact || null,
         reporter_name || null,
