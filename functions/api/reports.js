@@ -55,27 +55,34 @@ export async function onRequest(context) {
 
   if (method === 'POST') {
     try {
-      let body;
+      let body = {};
       let photoBase64 = null;
       const contentType = request.headers.get('Content-Type') || '';
 
       if (contentType.includes('multipart/form-data')) {
-        // Handle multipart form data (with photo upload)
         const formData = await request.formData();
-        body = {};
+
         for (const [key, value] of formData.entries()) {
-          if (value instanceof File) {
-            // Handle photo upload
-            if (value.size > 0) {
+          // Check if it's a file/blob (has 'size' and 'arrayBuffer' method)
+          if (value && typeof value === 'object' && typeof value.arrayBuffer === 'function' && value.size > 0) {
+            try {
               const buffer = await value.arrayBuffer();
-              const bytes = new Uint8Array(buffer);
-              let binary = '';
-              for (let i = 0; i < bytes.length; i++) {
-                binary += String.fromCharCode(bytes[i]);
+              // Use Buffer if available (Cloudflare Workers workerd), fallback to manual
+              if (typeof Buffer !== 'undefined') {
+                photoBase64 = 'data:' + value.type + ';base64,' + Buffer.from(buffer).toString('base64');
+              } else {
+                const bytes = new Uint8Array(buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.length; i++) {
+                  binary += String.fromCharCode(bytes[i]);
+                }
+                photoBase64 = 'data:' + value.type + ';base64,' + btoa(binary);
               }
-              photoBase64 = 'data:' + value.type + ';base64,' + btoa(binary);
+            } catch (photoErr) {
+              console.error('Photo conversion error:', photoErr.message);
+              // Continue without photo
             }
-          } else {
+          } else if (typeof value === 'string') {
             body[key] = value;
           }
         }
